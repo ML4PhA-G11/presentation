@@ -1,0 +1,13 @@
+# Node / Slidev
+node_modules/
+dist/
+.slidev/
+
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+
+# Editor / OS
+*.log
+.DS_Store
