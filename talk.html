@@ -168,10 +168,11 @@
       </ul>
       <table>
         <tr><th>Setting</th><th>Value</th></tr>
-        <tr><td>Optimiser</td><td>Adam</td></tr>
+        <tr><td>Optimiser</td><td>Adam, lr 1e-3</td></tr>
         <tr><td>Batch size</td><td>32</td></tr>
         <tr><td>Epochs</td><td>200 (max), patience 50</td></tr>
-        <tr><td>Precision</td><td>float64</td></tr>
+        <tr><td>Schedule</td><td>ReduceLROnPlateau (&times;0.5)</td></tr>
+        <tr><td>Split / precision</td><td>70/30, float64</td></tr>
       </table>
     </div>
     <div>
@@ -188,11 +189,14 @@
   <p>The MLP only ever sees the 6 free DoFs; symmetry and conservation wrap around it.</p>
   <div class="cols">
     <div>
-      <p><strong>Inner MLP</strong> &mdash; deliberately small:</p>
+      <p><strong>Inner MLP</strong> &mdash; deliberately small (<code>lbm_ml/model/network.py</code>):</p>
       <ul>
-        <li>input/output: the 6 unconstrained \(\Delta f_i\)</li>
-        <li>2 hidden layers &times; 50 units, <code>relu</code>, no bias</li>
-        <li>He-uniform init, <code>softmax</code> output (a normalised distribution)</li>
+        <li>\(9 \to 9\), but <code>AlgReconstruction</code> overwrites 3 outputs &mdash;
+          only <span class="highlight">6 DoFs</span> are effectively free</li>
+        <li>2 hidden layers &times; 50 units, <code>relu</code>, no bias, He-uniform init</li>
+        <li><code>softmax</code> last layer (output is a normalised distribution)</li>
+        <li>shared inner net is swappable: <code>d4equivariant</code> (plain) or
+          <code>resnet</code> (residual)</li>
       </ul>
       <p><strong>Conservation by construction</strong> (<code>AlgReconstruction</code>) &mdash;
       the other 3 components are <em>solved</em>, not predicted:</p>
@@ -229,8 +233,9 @@ f_post = f_pre + df          # exact mass + momentum</code></pre>
 <!-- Results: Karman -->
 <section>
   <h2 style="text-align:center;">Results &mdash; K&aacute;rm&aacute;n vortex street</h2>
-  <p style="text-align:center;">Flow past a cylinder: <strong>classical BGK-LBM</strong> vs
-    <strong>ML-LBM</strong> (learned collision).</p>
+  <p style="text-align:center;">Flow past a cylinder (<code>lbm_karman-ng.py</code>): channel
+    2.2&times;0.41&nbsp;m, cylinder &empty;&nbsp;0.10&nbsp;m, <strong>Re&nbsp;150</strong>,
+    Zou&ndash;He in/outlet &mdash; <strong>classical BGK-LBM</strong> vs <strong>ML-LBM</strong>.</p>
   <div class="cols" style="margin-top:10px;">
     <div style="text-align:center;">
       <img src="assets/karman_classical.gif" style="width:100%; border-radius:6px;" alt="Classical LBM Karman street">
@@ -285,21 +290,22 @@ f_post = f_pre + df          # exact mass + momentum</code></pre>
   <h2>Results &mdash; ResNet experiment</h2>
   <div class="cols">
     <div>
-      <p><strong>Why a residual network here?</strong></p>
+      <p><strong>Why a residual inner net?</strong> (the <code>resnet</code> model)</p>
       <ul>
         <li>Collision is a <strong>small correction</strong>:
           \(\mathbf{f}^{\text{post}} = \mathbf{f}^{\text{pre}} + \Delta f\) is <em>already</em>
-          a residual connection &mdash; the network only models \(\Delta f\).</li>
-        <li>Near equilibrium \(\Delta f \to 0\), so learning a perturbation around the
-          identity is far better conditioned than learning the full map.</li>
-        <li>Going deeper with <strong>plain</strong> stacks hurts (vanishing gradients);
-          <span class="highlight">ResNet blocks</span> add depth while keeping the identity
-          easy to represent.</li>
+          a residual &mdash; the network only models \(\Delta f \to 0\) near equilibrium.</li>
+        <li>Same <strong>D4 + AlgReconstruction wrapper</strong>; only the shared inner
+          sub-network changes from a plain stack to residual blocks.</li>
       </ul>
-      <div class="box">
-        Experiment: swap the 2-layer MLP for residual blocks of the same width and compare
-        convergence + long-time stability.
-      </div>
+      <p>Each block is a <strong>two-layer bottleneck</strong> with the skip added
+      <em>after a linear (no-activation) projection</em>:</p>
+      <pre><code class="language-python">x = Dense(n, "relu")(x)          # W1
+x = Dense(n, activation=None)(x) # W2 — can be negative
+x = Add()([x, residual])         # skip corrects either way</code></pre>
+      <p class="cap">A single <code>relu</code> block would force <code>relu(Wx) &ge; 0</code>,
+        so the hidden state could only grow &mdash; the no-activation W&#8322; is what lets the
+        skip correct in <em>either</em> direction.</p>
     </div>
     <div>
       <img src="assets/resnet_experiment.png" style="width:100%; border-radius:6px;" alt="ResNet experiment">

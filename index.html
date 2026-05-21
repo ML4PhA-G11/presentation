@@ -145,32 +145,23 @@
       </a>
     </li>
     <li>
-      <a class="lecture-card" href="https://github.com/ML4PhA-G11" target="_blank">
+      <a class="lecture-card" href="../model-experiments/">
         <div class="number">Code</div>
-        <div class="title">learning_lbm_collision_operator</div>
+        <div class="title">Surrogate Models and Experiments</div>
         <div class="description">
-          Training and simulation code &mdash; <code>run-all-tensorflow.py</code>:
-          synthetic BGK data, the equivariant lift + algebraic conservation, and the
-          LBM loop with the learned collision step.
+          The <code>../model-experiments/</code> repo: the <code>lbm_ml</code> package
+          (D2Q9 stencil, D4 symmetry + algebraic conservation, RMSRE loss, the
+          <code>d4equivariant</code> and <code>resnet</code> models) plus <code>run_all.py</code>
+          (data &rarr; train &rarr; Taylor&ndash;Green sim) and a classical Kármán solver.
         </div>
         <div class="topics">
-          <span class="tag">TensorFlow</span>
+          <span class="tag">Keras / TensorFlow</span>
           <span class="tag">D2Q9</span>
+          <span class="tag">D4-equivariant</span>
           <span class="tag">AlgReconstruction</span>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a class="lecture-card" href="https://arxiv.org/abs/2212.06124" target="_blank">
-        <div class="number">Reference</div>
-        <div class="title">Toward learning Lattice Boltzmann collision operators</div>
-        <div class="description">
-          Corbetta, Gabbana, Gyrya, Livescu, Prins, Toschi.
-          <em>Eur. Phys. J. E</em> <strong>46</strong>, 10 (2023). The paper this prototype is based on.
-        </div>
-        <div class="topics">
-          <span class="tag">arxiv:2212.06124</span>
-          <span class="tag">EPJ-E (2023)</span>
+          <span class="tag">RMSRE</span>
+          <span class="tag">ResNet</span>
+          <span class="tag">uv</span>
         </div>
       </a>
     </li>
