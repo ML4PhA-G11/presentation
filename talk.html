@@ -381,6 +381,46 @@ f_post = f_pre + df          # exact mass + momentum</code></pre>
   </div>
 </section>
 
+<!-- Appendix: GenAI usage guideline -->
+<section>
+  <h2>Appendix &mdash; how we used GenAI</h2>
+  <p>The physics and the structure are ours; the AI accelerates the typing &mdash;
+    never the thinking, and never unchecked.</p>
+  <div class="cols">
+    <div>
+      <div class="box">
+        <div class="number" style="color:#3498db; font-weight:600; font-size:0.9em;">1 &middot; Draft manually</div>
+        <p>We write the <strong>software architecture</strong> and
+        <strong>specification</strong> ourselves &mdash; the D4 symmetry, the conservation
+        algebra, the train/sim split. The AI fills in implementation against
+        <em>our</em> design, it does not invent the design.</p>
+      </div>
+      <div class="box">
+        <div class="number" style="color:#3498db; font-weight:600; font-size:0.9em;">2 &middot; Gate &amp; verify the code</div>
+        <p>Every generated line is <strong>read line by line</strong> and gated like any
+        scientific code &mdash; <em>software QA for physics &amp; ML</em>: check conservation
+        holds to machine precision, equilibria and limits are right, and results
+        match a known baseline before they are trusted.</p>
+      </div>
+    </div>
+    <div>
+      <div class="box">
+        <div class="number" style="color:#3498db; font-weight:600; font-size:0.9em;">3 &middot; Always reproducible</div>
+        <p>We only accept output as <strong>reproducible scripts</strong> &mdash; fixed
+        seeds, pinned configs, one command to regenerate every figure in this deck.
+        No notebook-only, copy-paste, or "trust me" results.</p>
+      </div>
+      <div class="box" style="background:#eef5fb; border:1px solid #d6e6f5;">
+        <strong>The principle:</strong> GenAI is a fast junior collaborator &mdash;
+        useful, but <span class="highlight">accountable to us</span>. We own the design,
+        the verification, and the reproducibility; the tool owns none of them.
+      </div>
+    </div>
+  </div>
+  <p class="cap">In line with the ML4PhA GenAI policy: tier-based, transparent, and
+    accountable AI usage.</p>
+</section>
+
 </div>
 </div>
 
