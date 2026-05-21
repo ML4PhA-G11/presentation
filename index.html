@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learning the LBM Collision Operator — ML4PhA Block 05, Group 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    background: #ffffff;
+    color: #2c3e50;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4em;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.2em;
+  }
+  .subtitle {
+    font-size: 1.1em;
+    color: #7f8c8d;
+    margin-bottom: 2em;
+  }
+  .subtitle a {
+    color: #7f8c8d;
+    text-decoration: none;
+    border-bottom: 1px dotted #7f8c8d;
+  }
+  .subtitle a:hover { color: #2c3e50; }
+  .lecture-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .lecture-card {
+    display: block;
+    background: #ecf0f1;
+    border: 1px solid #dce1e3;
+    border-radius: 12px;
+    padding: 24px 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s ease;
+  }
+  .lecture-card:hover {
+    border-color: #3498db;
+    background: #e8eef1;
+    transform: translateX(6px);
+    box-shadow: 0 4px 20px rgba(52, 152, 219, 0.12);
+  }
+  .lecture-card .number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: #3498db;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .lecture-card .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3em;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-top: 4px;
+  }
+  .lecture-card .description {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+  .lecture-card .topics {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .lecture-card .tag {
+    font-size: 0.75em;
+    background: #dce1e3;
+    color: #555;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #dce1e3;
+    font-size: 0.85em;
+    color: #7f8c8d;
+  }
+  .footer a { color: #3498db; text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Learning the Lattice Boltzmann<br>Collision Operator</h1>
+  <p class="subtitle">
+    ML4PhA 2026 &middot; Block 05 &middot; Group 11 &mdash;
+    Physics-Informed ML for fluid dynamics
+  </p>
+
+  <ul class="lecture-list">
+    <li>
+      <a class="lecture-card" href="talk.html">
+        <div class="number">Presentation</div>
+        <div class="title">Learning the LBM Collision Operator</div>
+        <div class="description">
+          A D4-equivariant neural network that learns the Lattice Boltzmann (D2Q9)
+          BGK collision operator with exact mass and momentum conservation. Why a
+          naive net fails, why symmetry (GAVG) makes it work, and a Kármán-vortex-street demo.
+        </div>
+        <div class="topics">
+          <span class="tag">Lattice Boltzmann</span>
+          <span class="tag">Collision operator</span>
+          <span class="tag">D4 equivariance</span>
+          <span class="tag">GAVG</span>
+          <span class="tag">Conservation laws</span>
+          <span class="tag">ResNet</span>
+          <span class="tag">Kármán vortex street</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="lecture-card" href="https://github.com/ML4PhA-G11" target="_blank">
+        <div class="number">Code</div>
+        <div class="title">learning_lbm_collision_operator</div>
+        <div class="description">
+          Training and simulation code &mdash; <code>run-all-tensorflow.py</code>:
+          synthetic BGK data, the equivariant lift + algebraic conservation, and the
+          LBM loop with the learned collision step.
+        </div>
+        <div class="topics">
+          <span class="tag">TensorFlow</span>
+          <span class="tag">D2Q9</span>
+          <span class="tag">AlgReconstruction</span>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="lecture-card" href="https://arxiv.org/abs/2212.06124" target="_blank">
+        <div class="number">Reference</div>
+        <div class="title">Toward learning Lattice Boltzmann collision operators</div>
+        <div class="description">
+          Corbetta, Gabbana, Gyrya, Livescu, Prins, Toschi.
+          <em>Eur. Phys. J. E</em> <strong>46</strong>, 10 (2023). The paper this prototype is based on.
+        </div>
+        <div class="topics">
+          <span class="tag">arxiv:2212.06124</span>
+          <span class="tag">EPJ-E (2023)</span>
+        </div>
+      </a>
+    </li>
+  </ul>
+
+  <div class="footer">
+    <p>
+      ML4PhA 2026 &mdash; Block 05, Group 11.
+      Built with <a href="https://revealjs.com" target="_blank">reveal.js</a>.
+    </p>
+  </div>
+</div>
+</body>
+</html>

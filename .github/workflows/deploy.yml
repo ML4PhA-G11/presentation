@@ -20,25 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Slidev
-        # `--base` must match the repo name so asset URLs resolve under
-        # https://<org>.github.io/<repo>/.
-        run: npx slidev build --base /presentation/ --out dist
-
-      - name: Add .nojekyll
-        run: touch dist/.nojekyll
+      # The site is plain static HTML: index.html (landing page) + talk.html (the
+      # reveal.js deck), which pulls reveal.js, MathJax and the chalkboard plugin
+      # from a CDN — no build step. We just stage the files + assets and publish.
+      - name: Stage static site
+        run: |
+          mkdir -p _site
+          cp index.html talk.html _site/
+          cp -r assets _site/assets
+          touch _site/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: _site
 
   deploy:
     needs: build

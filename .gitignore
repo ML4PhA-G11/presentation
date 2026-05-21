@@ -1,7 +1,6 @@
-# Node / Slidev
-node_modules/
+# Build / deploy output
+_site/
 dist/
-.slidev/
 
 # Python / uv
 .venv/
