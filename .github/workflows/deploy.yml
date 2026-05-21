@@ -30,6 +30,19 @@ jobs:
           cp -r assets _site/assets
           touch _site/.nojekyll
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Render the reveal.js deck to talk.pdf (the landing page's "PDF" link)
+      # with decktape, so the downloadable PDF always matches the live deck.
+      - name: Render deck to PDF
+        run: |
+          python3 -m http.server 8080 --directory _site >/dev/null 2>&1 &
+          sleep 2
+          npx --yes decktape reveal --size 1214x700 \
+            "http://localhost:8080/talk.html" _site/talk.pdf
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

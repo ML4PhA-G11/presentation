@@ -95,6 +95,14 @@
     padding: 3px 10px;
     border-radius: 20px;
   }
+  .lecture-card .pdf-link {
+    display: inline-block;
+    font-size: 0.8em;
+    color: #3498db;
+    margin-top: 10px;
+    pointer-events: auto;
+  }
+  .lecture-card .pdf-link:hover { text-decoration: underline; }
   .footer {
     margin-top: 60px;
     padding-top: 24px;
@@ -133,6 +141,7 @@
           <span class="tag">ResNet</span>
           <span class="tag">Kármán vortex street</span>
         </div>
+        <span class="pdf-link" onclick="event.preventDefault(); window.open('talk.pdf');">PDF</span>
       </a>
     </li>
     <li>

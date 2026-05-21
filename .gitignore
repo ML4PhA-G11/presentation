@@ -1,6 +1,7 @@
 # Build / deploy output
 _site/
 dist/
+talk.pdf
 
 # Python / uv
 .venv/

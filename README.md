@@ -73,15 +73,30 @@ python3 -m http.server 3030   # then open http://localhost:3030/
 `index.html` links to `talk.html`. reveal.js shortcuts in the deck: `f`
 fullscreen, `o` overview, `s` speaker notes, `b` / `c` chalkboard.
 
-## 3. Build a static site
+## 3. PDF download
 
-No build needed — `index.html`, `talk.html` and `assets/` *are* the site.
+The landing page card has a **PDF** link (`talk.pdf`), just like the ML4PhA
+lecture pages. The deck is rendered to PDF with
+[decktape](https://github.com/astefanutti/decktape):
 
-## 4. Hosting on GitHub Pages
+```bash
+./make-pdf.sh        # serves the deck + renders talk.pdf (needs internet + Chrome)
+```
+
+CI runs the same step on every push, so the published `talk.pdf` always matches
+the live deck. `talk.pdf` is a build artifact — it's `.gitignore`d, not
+committed.
+
+## 4. Build a static site
+
+No build needed — `index.html`, `talk.html` and `assets/` *are* the site
+(plus `talk.pdf`, generated as above).
+
+## 5. Hosting on GitHub Pages
 
 A workflow in `.github/workflows/deploy.yml` stages `index.html`, `talk.html`
-and `assets/` and publishes them on every push to `main`. After the first
-successful run, enable Pages:
+and `assets/`, renders `talk.pdf`, and publishes them on every push to `main`.
+After the first successful run, enable Pages:
 
 1. Repo Settings → Pages → Source = **GitHub Actions**.
 2. Push to `main`; the deck appears at
@@ -111,10 +126,11 @@ uv run prepare_figures.py      # re-copies the new artifacts into assets/
 
 ```
 .
-├── index.html                   # landing page (lecturer-style cards)
+├── index.html                   # landing page (lecturer-style cards + PDF link)
 ├── talk.html                    # the reveal.js deck — edit this
+├── make-pdf.sh                  # render talk.html -> talk.pdf (decktape)
 ├── pyproject.toml               # Pillow (Python, via uv)
 ├── prepare_figures.py           # asset prep helper
 ├── assets/                      # images/GIFs referenced by the deck
-└── .github/workflows/deploy.yml # GitHub Pages deploy
+└── .github/workflows/deploy.yml # GitHub Pages deploy (+ PDF render)
 ```
