@@ -146,7 +146,8 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 
 <div class="box" style="text-align:center; margin-top:8px;">
 
-Same wake, same shedding frequency — mass & momentum conserved <span class="highlight">exactly</span>.
+Same wake, same shedding frequency was expected —> mass & momentum conserved <span class="highlight">exactly</span> in both.
+Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry break?
 
 </div>
 
@@ -188,6 +189,8 @@ x = Add()([x, residual])          # corrects either way
 - **More operators.** Beyond BGK: MRT, multiphase, thermal — across varying $\tau$ and resolution.
 - **Push to 3D.** Same group-equivariance recipe on D3Q27.
 - **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; domain boundaries via surrogate models.
+- **Measure of Supression**. How much is the ML model supressing the anti-symmetry? Affects generalization.
+- **Sensitivity to initial conditions**. Are the ML model results easily reproducible and general?
 
 ---
 
