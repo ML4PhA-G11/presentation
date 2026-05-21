@@ -20,13 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # The site is plain static HTML: index.html (landing page) + talk.html (the
-      # reveal.js deck), which pulls reveal.js, MathJax and the chalkboard plugin
-      # from a CDN — no build step. We just stage the files + assets and publish.
+      # Plain static site: index.html (landing), talk.html (reveal.js shell) and
+      # talk.md (the deck content, loaded by talk.html). reveal.js, MathJax and the
+      # plugins come from a CDN — no build step. Stage the files + assets and publish.
       - name: Stage static site
         run: |
           mkdir -p _site
-          cp index.html talk.html _site/
+          cp index.html talk.html talk.md _site/
           cp -r assets _site/assets
           touch _site/.nojekyll
 

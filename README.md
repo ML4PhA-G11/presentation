@@ -29,17 +29,31 @@ After that, the rest of this README "just works".
 
 ## The site
 
-Two plain static HTML files, matching the framework and styling of the ML4PhA
-lecture decks (reveal.js 5.1.0, `white` theme, Space Grotesk / Inter fonts,
-MathJax + chalkboard plugins):
+Plain static files, matching the framework and styling of the ML4PhA lecture
+decks (reveal.js 5.1.0, `white` theme, Space Grotesk / Inter fonts, MathJax +
+chalkboard plugins):
 
 - [`index.html`](./index.html) — the **landing page** (lecturer-style cards
   linking to the talk, the code, and the reference paper).
-- [`talk.html`](./talk.html) — the **deck itself**, a single self-contained
-  reveal.js file.
+- [`talk.md`](./talk.md) — **the deck content, in Markdown**. This is the file
+  you edit.
+- [`talk.html`](./talk.html) — a thin **reveal.js shell** that loads `talk.md`
+  (via the reveal Markdown plugin) and holds the theme CSS + plugin config.
 
 reveal.js, MathJax and the plugins are loaded from a CDN, so **there is no build
-step** — edit the HTML and refresh.
+step** — edit `talk.md` and refresh.
+
+### Authoring `talk.md`
+
+- Slides are separated by a line containing only `---`.
+- Per-slide options: `<!-- .slide: class="tc" -->` (`tc` = centered; `title`,
+  `thanks` size the heading).
+- **Math uses `$ … $` and `$$ … $$`** — *not* `\( … \)`. The Markdown parser
+  strips the backslash before `\(`, so MathJax never sees it; dollar delimiters
+  survive (configured in `talk.html`).
+- Two-column / callout layout uses thin HTML wrappers — `<div class="cols">`,
+  `<div class="box">` — with a **blank line** after the opening tag so Markdown
+  inside still parses.
 
 ## Tooling
 
@@ -89,14 +103,14 @@ committed.
 
 ## 4. Build a static site
 
-No build needed — `index.html`, `talk.html` and `assets/` *are* the site
-(plus `talk.pdf`, generated as above).
+No build needed — `index.html`, `talk.html`, `talk.md` and `assets/` *are* the
+site (plus `talk.pdf`, generated as above).
 
 ## 5. Hosting on GitHub Pages
 
-A workflow in `.github/workflows/deploy.yml` stages `index.html`, `talk.html`
-and `assets/`, renders `talk.pdf`, and publishes them on every push to `main`.
-After the first successful run, enable Pages:
+A workflow in `.github/workflows/deploy.yml` stages `index.html`, `talk.html`,
+`talk.md` and `assets/`, renders `talk.pdf`, and publishes them on every push to
+`main`. After the first successful run, enable Pages:
 
 1. Repo Settings → Pages → Source = **GitHub Actions**.
 2. Push to `main`; the deck appears at
@@ -127,7 +141,8 @@ uv run prepare_figures.py      # re-copies the new artifacts into assets/
 ```
 .
 ├── index.html                   # landing page (lecturer-style cards + PDF link)
-├── talk.html                    # the reveal.js deck — edit this
+├── talk.md                      # the deck content (Markdown) — edit this
+├── talk.html                    # reveal.js shell that loads talk.md
 ├── make-pdf.sh                  # render talk.html -> talk.pdf (decktape)
 ├── pyproject.toml               # Pillow (Python, via uv)
 ├── prepare_figures.py           # asset prep helper
