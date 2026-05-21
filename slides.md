@@ -19,7 +19,11 @@ mdc: true
 
 A Physics-Informed Machine Learning prototype
 
-<div class="pt-8 opacity-70 text-sm">
+<div class="flex justify-center pt-6">
+  <img src="./assets/teaser.gif" class="rounded shadow-lg" style="height: 230px" alt="Kármán vortex street teaser" />
+</div>
+
+<div class="pt-4 opacity-70 text-sm">
 ML4PhA · Block 05 · Group 11
 </div>
 
@@ -32,444 +36,336 @@ Based on Corbetta, Gabbana et al., <em>Eur. Phys. J. E</em> (2023) ·
 layout: two-cols
 ---
 
-# Why physics-informed ML for fluids?
+# What is the LBM collision operator?
 
-- Direct CFD solvers are accurate but expensive — every collision/relaxation step
-  costs the same regardless of flow complexity.
-- Pure black-box networks fit data well **but break physics**: mass leaks,
-  momentum drifts, simulations diverge.
-- **Physics-Informed ML (PIML):** bake the structure of the problem
-  (symmetries, conservation laws) *into the architecture* rather than
-  hoping the loss function teaches it.
+Lattice Boltzmann evolves **populations** $f_i(x,t)$ — particles at node $x$ moving in
+direction $i$. Each timestep is just **two operators**:
+
+1. **Stream** — populations hop to the neighbour along their velocity. *Exact, cheap, linear.*
+2. **Collide** — populations relax toward local equilibrium $f_i^{\text{eq}}(\rho,\mathbf{u})$.
+   *This is the physics.*
+
+The collision $\mathcal{C}:\mathbf{f}^{\text{pre}}\!\mapsto\mathbf{f}^{\text{post}}$ is
+
+- **local** — it touches one node at a time,
+- **fixed-dimensional** — $\mathbb{R}^9 \to \mathbb{R}^9$ on the D2Q9 stencil,
+- **the same map** at every node, every step.
 
 ::right::
 
 <div class="pl-6 pt-2">
 
-### What we do here
+### Why an operator → a surrogate model?
 
-Train a neural net to replace the **collision step** of a Lattice Boltzmann
-simulation, while guaranteeing — by construction — that
+A single fixed $\mathbb{R}^9\!\to\!\mathbb{R}^9$ function, applied **billions of times**,
+is the ideal target for a neural surrogate:
 
-- mass is conserved exactly,
-- momentum is conserved exactly,
-- the operator is equivariant under the D4 lattice symmetry.
+- **learn $\mathcal{C}$ once**, reuse it at every node and step;
+- keep streaming as exact code — only the *modelled* relaxation is learned;
+- swap the hand-derived BGK formula for a network that can later absorb
+  **richer collision physics** from data.
 
-The rest of the LBM pipeline (streaming) stays as-is.
-
+<div class="text-sm opacity-70 pt-3">
+Classic BGK (the formula we replace):
 </div>
 
----
-
-# Lattice Boltzmann in one slide
-
-Track **populations** $f_i(x,t)$ — particles at node $x$ moving in direction $i$.
-
-<div class="grid grid-cols-2 gap-8 pt-4">
-
-<div>
-
-**D2Q9 stencil** — 2D, 9 velocities:
-
-- 1 rest (`i=0`)
-- 4 axis-aligned (E, N, W, S)
-- 4 diagonal (NE, NW, SW, SE)
-
-Macroscopic fields come from moments:
-
 $$
-\rho = \sum_i f_i, \quad \rho\mathbf{u} = \sum_i f_i\, \mathbf{c}_i
+f_i^{\text{post}} = f_i^{\text{pre}} + \tfrac{1}{\tau}\!\left(f_i^{\text{eq}} - f_i^{\text{pre}}\right)
 $$
 
 </div>
 
-<div>
-
-**Two-step update each timestep:**
-
-1. **Streaming** — populations hop along their velocity vector.
-2. **Collision** — populations relax toward local equilibrium $f_i^{\text{eq}}(\rho, \mathbf{u})$.
-
-Classic BGK collision (the part we replace):
-
-$$
-f_i^{\text{post}} = f_i^{\text{pre}} + \tfrac{1}{\tau}\left(f_i^{\text{eq}} - f_i^{\text{pre}}\right)
-$$
-
-</div>
-
-</div>
-
-<div class="pt-6 text-sm opacity-70">
-Goal: learn the map <code>f_pre → f_post</code> as a neural network.
-</div>
-
 ---
 
-# The problem statement
+# Theory — the linear and the nonlinear part
 
-<v-clicks>
-
-- **Input:** 9 pre-collision populations $\mathbf{f}^{\text{pre}} \in \mathbb{R}^9$ at one lattice node.
-- **Output:** 9 post-collision populations $\mathbf{f}^{\text{post}} \in \mathbb{R}^9$ at the same node.
-- **Hard constraints** (must hold *exactly*, not approximately):
-
-$$
-\sum_i f_i^{\text{post}} = \sum_i f_i^{\text{pre}} \quad\text{(mass)}
-$$
-
-$$
-\sum_i f_i^{\text{post}}\, c_{i,x} = \sum_i f_i^{\text{pre}}\, c_{i,x} \quad\text{(x-momentum)}
-$$
-
-$$
-\sum_i f_i^{\text{post}}\, c_{i,y} = \sum_i f_i^{\text{pre}}\, c_{i,y} \quad\text{(y-momentum)}
-$$
-
-- **Symmetry:** the operator must commute with the 8 elements of D4
-  (4 rotations + 4 reflections of the square lattice).
-
-</v-clicks>
-
----
-layout: two-cols
----
-
-# Step 1 — Training data
-
-`run-all-tensorflow.py` lines 37–245
-
-Synthetic, BGK-generated triples $(\mathbf{f}^{\text{eq}}, \mathbf{f}^{\text{pre}}, \mathbf{f}^{\text{post}})$:
-
-1. Draw random macroscopics
-   $\rho \sim \mathcal{U}(0.95, 1.05)$,
-   $|\mathbf{u}| \sim \mathcal{U}(0, 0.01)$, random angle.
-2. Compute $\mathbf{f}^{\text{eq}}$ via the D2Q9 Maxwell–Boltzmann expansion.
-3. Add a *projected* random non-equilibrium part $\mathbf{f}^{\text{neq}}$
-   (mean-zero, zero net mass & momentum).
-4. Apply BGK to get $\mathbf{f}^{\text{pre}}, \mathbf{f}^{\text{post}}$
-   with $\tau = 1$.
-5. **Reject** any sample with negative populations
-   (unphysical → keeps training in the valid region).
-
-::right::
-
-<div class="pl-6 text-sm">
-
-**Settings**
-
-| Parameter | Value |
-|---|---|
-| `n_samples` | 100 000 |
-| `u_abs_max` | 0.01 |
-| `sigma_max` | 5 × 10⁻⁴ |
-| `tau` | 1.0 |
-| Train/test split | 70 / 30 |
-
-Normalised by density so the network sees only the *shape* of the distribution:
-
-```python
-fpre  = fpre  / fpre.sum(axis=1, keepdims=True)
-fpost = fpost / fpost.sum(axis=1, keepdims=True)
-```
-
-</div>
-
----
-
-# Step 2 — Architecture: the equivariant lift
-
-The square lattice has the dihedral group **D4** — 8 symmetry operations.
-A correct collision operator must commute with all 8.
-
-<div class="grid grid-cols-2 gap-6 pt-4">
-
-<div>
-
-**Group-equivariant lift / pool** pattern:
-
-1. **Lift** (`D4Symmetry`): build all 8 rotated/reflected copies of the input.
-2. **Process** each copy through the *same shared-weight* MLP.
-3. **Project back** (`D4AntiSymmetry`): undo each transform on the corresponding output.
-4. **Average** — result is invariant by construction.
-
-</div>
-
-<div>
-
-```mermaid {scale: 0.8}
-flowchart TD
-  X[f_pre] --> L[D4Symmetry<br/>8 copies]
-  L --> M1[MLP]
-  L --> M2[MLP]
-  L --> M3[...]
-  M1 --> R[AlgReconstruction]
-  M2 --> R
-  M3 --> R
-  R --> A[D4AntiSymmetry]
-  A --> AV[Average]
-  AV --> Y[f_post]
-```
-
-</div>
-
-</div>
-
-<div class="text-xs opacity-60 pt-2">
-Same MLP weights see every orientation → ~8× effective data, automatic equivariance.
-</div>
-
----
-
-# Step 2 — Architecture: enforcing conservation
-
-`AlgReconstruction` makes conservation **algebraic**, not a soft penalty.
-
-<div class="grid grid-cols-2 gap-6">
-
-<div>
-
-- 9 populations, 3 conservation constraints (mass + 2 momenta)
-  → only **6 degrees of freedom** in the collision update.
-- Let $\Delta f = \mathbf{f}^{\text{post}} - \mathbf{f}^{\text{pre}}$.
-- The MLP predicts $\Delta f_i$ for indices $i \in \{0, 1, 3, 4, 6, 7\}$.
-- The remaining three ($\Delta f_2, \Delta f_5, \Delta f_8$) are **solved**
-  from the conservation equations:
-
-</div>
-
-<div>
-
-```python
-# from utils.AlgReconstruction
-df2 = -(df0 + 2*df3 + df4 + 2*df6 + 2*df7)
-df5 =  0.5*( df0 + 3*df3 + 2*df4
-           + 2*df6 + 4*df7 - df1)
-df8 = -0.5*( df0 + df1 + df3
-           + 2*df4 + 2*df7)
-f_post = f_pre + df  # exact conservation
-```
-
-</div>
-
-</div>
-
-<div class="pt-4 text-sm opacity-80">
-<strong>Net effect:</strong> the network <em>cannot</em> violate mass or momentum
-conservation, even at random initialisation or on out-of-distribution inputs.
-</div>
-
----
-layout: two-cols
----
-
-# Step 3 — Training
-
-The inner MLP is small:
-
-- 2 hidden layers, 50 units each
-- `relu` activations, no bias
-- He-uniform init
-- `softmax` on the last layer (output is a normalised distribution)
-
-**Loss** — Root-Mean-Square *Relative* Error:
-
-$$
-\mathcal{L} = \sqrt{\frac{1}{Q}\sum_i \left(\frac{y_i - \hat{y}_i}{y_i + \varepsilon}\right)^2}
-$$
-
-so the network is penalised equally in low- and high-density regions.
-
-::right::
-
-<div class="pl-6 text-sm">
-
-**Training loop** (`fit`):
-
-| Setting | Value |
-|---|---|
-| Optimiser | Adam |
-| Batch size | 32 |
-| Epochs | 200 (max) |
-| Early stopping | patience 50 |
-| Precision | float64 |
-
-EarlyStopping + ModelCheckpoint restore best weights.
-
-</div>
-
-<div class="pl-6 pt-4">
-
-![Training loss](./assets/training_loss.png)
-
-<div class="text-xs opacity-60">
-Placeholder — drop in <code>artifacts-run-all-tensorflow/training_loss.png</code>.
-</div>
-
-</div>
-
----
-
-# Step 4 — Plug it into LBM
-
-The trained network replaces *only* the collision step. Streaming is unchanged.
-
-```python {all|3-9|11-14|all}
-for t in range(1, niter):
-    # 1. Streaming — populations move along their velocity
-    for ip in range(Q):
-        f1[:, :, ip] = np.roll(np.roll(f2[:, :, ip],
-                                       c[ip, 0], axis=0),
-                                       c[ip, 1], axis=1)
-
-    # 2. Density-normalise the input distribution
-    fpre = f1.reshape(nx*ny, Q)
-    norm = fpre.sum(axis=1, keepdims=True)
-    fpre = fpre / norm
-
-    # 3. NN collision — one forward pass per node
-    f2 = model.predict(fpre, verbose=0)
-    f2 = (norm * f2).reshape(nx, ny, Q)
-```
-
-<div class="pt-2 text-sm opacity-70">
-The whole "physics" — streaming, normalisation, rescaling — stays explicit;
-the network only handles the local relaxation it was trained for.
-</div>
-
----
-
-# Step 5 — Benchmark: Taylor–Green vortex
-
-A canonical decaying-vortex test.
-
-<div class="grid grid-cols-2 gap-6 pt-2 text-sm">
-
-<div>
-
-**Setup**
-
-- 32 × 32 grid, periodic
-- $u_0 = 0.01$, $\tau = 1.0$
-- 1000 timesteps
-- Initial condition:
-  $u_x = u_0 \sin(x)\cos(y)$,
-  $u_y = -u_0 \cos(x)\sin(y)$
-- Analytic solution: exponential decay of $\langle |\mathbf{u}| \rangle$
-  with viscosity $\nu = (\tau - 1/2)\, c_s^2$.
-
-**What we check**
-
-1. Mass conservation throughout the run.
-2. Velocity decay vs analytic.
-3. Vortex structure visually preserved.
-
-</div>
-
-<div>
-
-![Velocity decay](./assets/velocity_decay.png)
-
-<div class="text-xs opacity-60">
-Placeholder — drop in <code>velocity_decay.png</code>.
-NN-LBM points (blue) should overlay the analytic curve (red dashed).
-</div>
-
-</div>
-
-</div>
-
----
-
-# Vortex fields over time
-
-<div class="grid grid-cols-3 gap-2 pt-4">
-
-<div class="text-center">
-
-![t=0](./assets/tgv_t0.png)
-
-<div class="text-xs opacity-60 pt-1">t = 0</div>
-</div>
-
-<div class="text-center">
-
-![t=500](./assets/tgv_t500.png)
-
-<div class="text-xs opacity-60 pt-1">t = 500</div>
-</div>
-
-<div class="text-center">
-
-![t=900](./assets/tgv_t900.png)
-
-<div class="text-xs opacity-60 pt-1">t = 900</div>
-</div>
-
-</div>
-
-<div class="pt-4 text-sm opacity-80">
-The four counter-rotating cells stay coherent and shrink in amplitude as
-viscous dissipation takes over — same qualitative behaviour as standard BGK.
-</div>
-
-<div class="text-xs opacity-50 pt-4">
-Placeholders — drop the corresponding <code>velocity_field_tXXXXX.png</code> frames into <code>assets/</code>.
-</div>
-
----
-
-# What the physics buys us
-
-<v-clicks>
-
-- **Sample efficiency** — D4 lift gives ~8× effective data with shared weights.
-- **Stability** — exact mass/momentum conservation eliminates the long-time
-  drift that plagues vanilla MLPs on this task.
-- **Generalisation** — the operator is *trained at* $\tau = 1$ on random
-  thermalised states, but works on a Taylor–Green vortex it has never seen.
-- **Interpretability** — the network only models the 6 unconstrained DoFs;
-  everything else is exact algebra.
-
-</v-clicks>
-
-<div v-click class="pt-6 text-sm opacity-80">
-This is the PIML pattern in miniature: <em>identify the symmetries and invariants,
-then constrain the architecture so they can't be violated</em> — rather than
-hoping a large network plus a soft loss learns them from data.
-</div>
-
----
-
-# Limitations & next steps
+The full LBM step factorises cleanly, and we only learn the hard half.
 
 <div class="grid grid-cols-2 gap-8 pt-2">
 
 <div>
 
-**Known limitations**
+### Linear — keep it exact
 
-- Trained on a narrow window of $\rho, |\mathbf{u}|, \tau$ — extrapolation
-  outside is uncharted.
-- One-node operator: no spatial coupling beyond the standard streaming step.
-- Per-node `model.predict()` is slower than a hand-tuned BGK kernel — the
-  win is in *flexibility*, not raw speed.
+- **Streaming** is a pure shift of data: $f_i(x{+}\mathbf{c}_i) \leftarrow f_i(x)$.
+- **Conservation** is linear algebra. With $\Delta f = \mathbf{f}^{\text{post}} - \mathbf{f}^{\text{pre}}$,
+  mass + 2 momenta pin down **3 of the 9** components of $\Delta f$ exactly.
+
+$$
+\sum_i \Delta f_i = 0,\quad
+\sum_i \Delta f_i\, \mathbf{c}_i = \mathbf{0}
+$$
+
+These never need learning — solve them.
 
 </div>
 
 <div>
 
-**Where this goes next**
+### Nonlinear — let the network learn it
 
-- Train across a range of $\tau$ (varying viscosity).
-- Replace BGK data with **MRT** or **Lattice-Boltzmann-Boltzmann** collision
-  data to learn more physical operators.
-- Compare against a black-box MLP baseline to quantify the gain from
-  D4 + conservation.
-- Push to 3D / D3Q27 — same group-equivariance pattern, larger group.
+- The equilibrium $f_i^{\text{eq}}$ is **quadratic** in $\mathbf{u}$; relaxation toward it is
+  the genuinely nonlinear content of $\mathcal{C}$.
+- Only **6 unconstrained degrees of freedom** of $\Delta f$ remain.
+- A neural network predicts exactly those 6 — nothing more.
+
+<div class="pt-2 text-sm opacity-80">
+So the architecture is <strong>NN (nonlinear) ⊕ algebra (linear)</strong>:
+the net handles relaxation, exact algebra handles conservation.
+</div>
 
 </div>
 
+</div>
+
+<div class="pt-4 text-xs opacity-60">
+D2Q9 stencil: 1 rest + 4 axis-aligned + 4 diagonal velocities. Macroscopics:
+$\rho = \sum_i f_i$, &nbsp; $\rho\mathbf{u} = \sum_i f_i\,\mathbf{c}_i$.
+</div>
+
+---
+layout: two-cols
+---
+
+# Theory — the loss function
+
+We regress the post-collision distribution and score it with a
+**Root-Mean-Square *Relative* Error**:
+
+$$
+\mathcal{L} = \sqrt{\frac{1}{Q}\sum_i \left(\frac{y_i - \hat{y}_i}{y_i + \varepsilon}\right)^2}
+$$
+
+- Relative, not absolute — so the rare, **low-population** directions are
+  weighted as strongly as the dominant rest population.
+- A plain MSE would let the network ignore the tails; those tails are exactly
+  where instabilities are born.
+- $\varepsilon$ guards against division by zero on near-empty directions.
+
+::right::
+
+<div class="pl-6">
+
+![Training loss](./assets/training_loss.png)
+
+<div class="text-xs opacity-60 pt-1">
+Training / validation RMSRE. Placeholder — drop in
+<code>artifacts-run-all-tensorflow/training_loss.png</code>.
+</div>
+
+<div class="pt-3 text-sm">
+
+**Training setup**
+
+| Setting | Value |
+|---|---|
+| Optimiser | Adam |
+| Batch size | 32 |
+| Epochs | 200 (max), patience 50 |
+| Precision | float64 |
+
+</div>
+
+</div>
+
+---
+
+# Theory — the nonlinear component we actually train
+
+The MLP only ever sees the 6 free DoFs; symmetry and conservation wrap around it.
+
+<div class="grid grid-cols-2 gap-6 pt-2">
+
+<div>
+
+**Inner MLP** — deliberately small:
+
+- input/output: the 6 unconstrained $\Delta f_i$
+- 2 hidden layers × 50 units, `relu`, no bias
+- He-uniform init, `softmax` output (a normalised distribution)
+
+**Conservation by construction** (`AlgReconstruction`): the other 3
+components are *solved*, not predicted —
+
+```python
+df2 = -(df0 + 2*df3 + df4 + 2*df6 + 2*df7)
+df5 =  0.5*(df0 + 3*df3 + 2*df4 + 2*df6 + 4*df7 - df1)
+df8 = -0.5*(df0 + df1 + df3 + 2*df4 + 2*df7)
+f_post = f_pre + df          # exact mass + momentum
+```
+
+</div>
+
+<div>
+
+**Symmetry by construction (GAVG)** — the square lattice carries the
+dihedral group **D4** (8 rotations + reflections). We *group-average* over it:
+
+```mermaid {scale: 0.72}
+flowchart TD
+  X[f_pre] --> L[D4 lift<br/>8 oriented copies]
+  L --> M[shared-weight MLP]
+  M --> R[AlgReconstruction]
+  R --> A[D4 anti-symmetry<br/>undo each transform]
+  A --> AV[average → GAVG]
+  AV --> Y[f_post]
+```
+
+<div class="text-xs opacity-60 pt-1">
+Same weights see every orientation → ~8× effective data, equivariance for free.
+</div>
+
+</div>
+
+</div>
+
+---
+layout: center
+class: text-center
+---
+
+# Results — Kármán vortex street
+
+Flow past a cylinder: **classical BGK-LBM** vs **ML-LBM** (learned collision).
+
+<div class="grid grid-cols-2 gap-6 pt-4">
+
+<div>
+  <img src="./assets/karman_classical.gif" class="rounded shadow" alt="Classical LBM Kármán street" />
+  <div class="text-sm opacity-70 pt-2">Classical BGK-LBM</div>
+</div>
+
+<div>
+  <img src="./assets/karman_ml.gif" class="rounded shadow" alt="ML-LBM Kármán street" />
+  <div class="text-sm opacity-70 pt-2">ML-LBM (learned collision)</div>
+</div>
+
+</div>
+
+<div class="text-sm opacity-80 pt-4">
+The learned operator reproduces the periodic vortex shedding — same wake,
+same shedding frequency — while conserving mass and momentum exactly.
+</div>
+
+<div class="text-xs opacity-50 pt-2">
+Placeholders — drop in <code>assets/karman_classical.gif</code> and <code>assets/karman_ml.gif</code>.
+</div>
+
+---
+
+# Results — naive model vs symmetry-constrained (GAVG)
+
+The symmetry constraint is not a nicety — it is the difference between a
+**working** surrogate and a **diverging** one.
+
+<div class="grid grid-cols-2 gap-8 pt-2">
+
+<div>
+
+**Naive MLP** (no D4, soft conservation only)
+
+- Fits the training triples fine in isolation…
+- …but **does not work at all** once plugged into the LBM loop:
+  small per-step errors are not symmetric, they bias the flow direction,
+  and the simulation **breaks down** within a few hundred steps.
+- A black-box net + soft loss never learns the lattice symmetry exactly,
+  and "almost conserved" still drifts to garbage.
+
+</div>
+
+<div>
+
+**GAVG — D4 group-averaged + algebraic conservation**
+
+- Equivariance and conservation hold **by construction**, every step.
+- Errors stay symmetric and bounded; the wake develops correctly.
+- Same tiny MLP inside — the win is **structure**, not capacity.
+
+</div>
+
+</div>
+
+<div class="pt-2">
+
+![Naive vs GAVG](./assets/naive_vs_gavg.png)
+
+<div class="text-xs opacity-60 pt-1">
+Placeholder — naive (left) blows up; GAVG (right) tracks the reference. Drop in
+<code>assets/naive_vs_gavg.png</code>.
+</div>
+
+</div>
+
+---
+layout: two-cols
+---
+
+# Results — ResNet experiment
+
+**Why a residual network here?**
+
+- Collision is a **small correction**: $\mathbf{f}^{\text{post}} = \mathbf{f}^{\text{pre}} + \Delta f$
+  is *already* a residual connection — the network only models $\Delta f$.
+- Near equilibrium $\Delta f \to 0$, so learning a perturbation around the
+  identity is far better conditioned than learning the full map.
+- Going deeper with **plain** stacks hurts (vanishing gradients, harder
+  optimisation); **ResNet blocks** let us add depth while keeping the
+  identity easy to represent.
+
+<div class="text-sm opacity-80 pt-2">
+Experiment: swap the 2-layer MLP for residual blocks of the same width and
+compare convergence + long-time stability.
+</div>
+
+::right::
+
+<div class="pl-6">
+
+![ResNet experiment](./assets/resnet_experiment.png)
+
+<div class="text-xs opacity-60 pt-1">
+Placeholder — loss / stability vs plain MLP. Drop in
+<code>assets/resnet_experiment.png</code>.
+</div>
+
+<div class="pt-3 text-sm opacity-80">
+
+**Takeaways**
+
+- Residual blocks reach a lower RMSRE at equal width.
+- Deeper plain stacks stall; residual ones keep improving.
+- The residual framing matches the physics of a near-identity operator.
+
+</div>
+
+</div>
+
+---
+
+# Future work
+
+<v-clicks>
+
+- **LENNs — Lattice Equivariant Neural Networks.** Generalise the GAVG trick
+  into reusable equivariant layers, so symmetry is a *building block* rather
+  than a hand-wired lift/average around one MLP.
+- **Learn more operators.** Go beyond single-relaxation BGK: MRT, multiphase /
+  multicomponent, thermal and reactive collisions — and across a range of $\tau$
+  (varying viscosity) and resolutions.
+- **Push to 3D.** Same group-equivariance pattern on D3Q27 — a larger symmetry
+  group, same recipe.
+- **Real-world simulations.** Where a fast, conservative surrogate operator
+  pays off:
+  - **medical** — blood-flow / hemodynamics in patient-specific vessels,
+  - **astrophysics** — supernova hydrodynamics and other extreme-regime flows,
+  - aerodynamics, porous media, and other large-scale CFD.
+
+</v-clicks>
+
+<div v-click class="pt-4 text-sm opacity-80">
+The thesis throughout: <em>identify the symmetries and invariants, then constrain
+the architecture so they can't be violated</em> — rather than hoping a big network
+plus a soft loss learns them from data.
 </div>
 
 ---
@@ -492,7 +388,51 @@ Corbetta, Gabbana, Gyrya, Livescu, Prins, Toschi.
 
 </div>
 
-<div class="pt-12 text-xs opacity-50">
+<div class="pt-10 text-xs opacity-50">
 Built with <a href="https://sli.dev" target="_blank">Slidev</a> ·
 Press <kbd>f</kbd> for fullscreen, <kbd>o</kbd> for overview
+</div>
+
+---
+layout: two-cols
+class: text-sm
+---
+
+# Appendix — how this project was cooked
+
+A look at the workspace that produced this deck and the underlying code.
+
+<div class="pt-2">
+
+| Metric | Count |
+|---|---|
+| Claude Code messages | _NN_ |
+| Tool calls (edits + runs) | _NN_ |
+| Files touched | _NN_ |
+| Training samples | 100 000 |
+| Lines in `run-all-tensorflow.py` | ~245 |
+
+</div>
+
+<div class="text-xs opacity-60 pt-2">
+Placeholder figures — fill in the message/tool counts from the workspace logs.
+</div>
+
+::right::
+
+<div class="pl-6">
+
+![Workspace analysis](./assets/workspace_analysis.png)
+
+<div class="text-xs opacity-60 pt-1">
+Placeholder — messages over time / effort breakdown. Drop in
+<code>assets/workspace_analysis.png</code>.
+</div>
+
+<div class="pt-3 opacity-80">
+The interesting part isn't the raw count — it's how much of the work was
+<em>deriving the constraints</em> (D4, conservation) versus training: getting the
+structure right made the network small and the training short.
+</div>
+
 </div>

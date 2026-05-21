@@ -1,12 +1,22 @@
 # assets/
 
-Drop the figures produced by `run-all-tensorflow.py` here. Expected files:
+Figures referenced by the deck. Run `uv run prepare_figures.py` to copy real
+artifacts in, or generate labelled placeholders when they're missing.
 
-- `training_loss.png`        — training/validation loss curves
-- `velocity_decay.png`       — velocity decay vs analytic (Taylor–Green)
-- `tgv_t0.png`               — vortex field at t = 0
-- `tgv_t500.png`             — vortex field at t = 500
-- `tgv_t900.png`             — vortex field at t = 900
+**Animations (GIF):**
 
-Until you copy real images in, the slides will show broken-image icons in
-those slots — that's expected.
+- `teaser.gif`            — title-page teaser (Kármán vortex street)
+- `karman_classical.gif`  — Kármán street, classical BGK-LBM
+- `karman_ml.gif`         — Kármán street, ML-LBM (learned collision)
+
+**Figures (PNG):**
+
+- `training_loss.png`     — training/validation RMSRE curves
+- `naive_vs_gavg.png`     — naive MLP diverges vs GAVG tracks the reference
+- `resnet_experiment.png` — ResNet vs plain MLP (loss / stability)
+- `workspace_analysis.png`— appendix: workspace effort breakdown
+- `velocity_decay.png`, `tgv_t0.png`, `tgv_t500.png`, `tgv_t900.png`
+  — Taylor–Green benchmark figures (legacy)
+
+Until real images are dropped in, the deck shows labelled placeholders. GIF
+placeholders are kept unless a real animation (>200 KB) is already present.
