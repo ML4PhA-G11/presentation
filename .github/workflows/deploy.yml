@@ -40,7 +40,10 @@ jobs:
         run: |
           python3 -m http.server 8080 --directory _site >/dev/null 2>&1 &
           sleep 2
+          # GitHub runners disable unprivileged user namespaces, so Chromium's
+          # sandbox can't start — launch it with --no-sandbox.
           npx --yes decktape reveal --size 1214x700 \
+            --chrome-arg=--no-sandbox --chrome-arg=--disable-setuid-sandbox \
             "http://localhost:8080/talk.html" _site/talk.pdf
 
       - uses: actions/upload-pages-artifact@v3
