@@ -185,9 +185,23 @@ x = Add()([x, residual])          # corrects either way
 ## Future work
 
 - **LENNs — Lattice Equivariant NNs.** Symmetry as a reusable building block, not a hand-wired lift/average around one MLP.
-- **More operators.** Beyond BGK: MRT, multiphase, thermal — across varying $\tau$ and resolution.
 - **Push to 3D.** Same group-equivariance recipe on D3Q27.
 - **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; domain boundaries via surrogate models.
+
+---
+
+## Future work — more operators
+
+Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$ and resolution.
+
+| Operators | Surrogate model | Taylor–Green | Lid-Driven | Kármán Vortex Street |
+| :--- | :--- | :---: | :---: | :---: |
+| **BGK** | GAVG | ✓ | N/A | ✓ |
+| | ResNet | ✓ | N/A | ✓ |
+| | LENN | N/A | N/A | N/A |
+| **MRT** | NCO | N/A | N/A | N/A |
+
+<p class="cap">✓ = validated · N/A = not yet attempted.</p>
 
 ---
 
