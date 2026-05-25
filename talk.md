@@ -618,17 +618,16 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 ---
 
 ## Future work
-
+- **More Operators** LBM has different collision approximations
 - **LENNs — Lattice Equivariant NNs.** Symmetry as a reusable building block, not a hand-wired lift/average around one MLP.
 - **Push to 3D.** Same group-equivariance recipe on D3Q27.
+- **Boundary condition handling** Replace or reconstruct expensive boundary condition computation.
+- **Training for chaotic systems** Sensitivity to initial conditions.
+- **Model generalization** Trained model should apply to different scenarios governing by the same physics.
 - **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; domain boundaries via surrogate models.
 - **Measure of Supression**. How much is the ML model supressing the anti-symmetry? Affects generalization.
-- **Sensitivity to initial conditions**. Are the ML model results easily reproducible and general?
-- **Boundary condition handling**
-- **Training for chaotic systems**
-- **Model generalization**
 
----
+--
 
 ## Future work — more operators
 
@@ -637,8 +636,8 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 | Operators | Surrogate model | Taylor–Green | Lid-Driven | Kármán Vortex Street |
 | :--- | :--- | :---: | :---: | :---: |
 | **BGK** | GAVG | ✓ | N/A | ✓ |
-| | ResNet | ✓ | N/A | ✓ |
-| | LENN | N/A | N/A | N/A |
+|         | ResNet | ✓ | N/A | ✓ |
+|         | GAVG + LENN | N/A | N/A | N/A |
 | **MRT** | NCO | N/A | N/A | N/A |
 
 <p class="cap">✓ = validated · N/A = not yet attempted.</p>
@@ -659,59 +658,35 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 
 ---
 
-## How this project was cooked
+## Takeaways
+- It is possible to learn collision operators of LBM. Supposedly all operators are possible.
+- By applying physics-informed constraints such as GAVG, the model is more accurate than MLP with the same layer number.
+- Train the model with dataset with complex physics embedded makes the model "smarter".
+- ResNet can help catch the nuance of chaotic system.
 
 <div class="cols">
 <div>
-
 | Metric | Count |
 |---|---|
-| Claude Code messages | *NN* |
-| Tool calls (edits + runs) | *NN* |
-| Files touched | *NN* |
-| Training samples | 100&thinsp;000 |
-| Snellius Budeget | 15000+ GPU hours |
-| Code | git fame |
-
-<p class="cap">Placeholder counts — fill in from workspace logs.</p>
-
+| Slack messages | 160 msg, 45 files |
+| Emails | 60+ |
+| Snellius Budeget unit | 30000+ |
+| Git repositories | 10 |
 </div>
 
 <div class="box">
-
 We appreciate the opportunity to propose our project.
-
-</div>
-
-<div>
-
-![Workspace analysis](assets/workspace_analysis.png)
-<!-- .element: style="width:100%; border-radius:6px;" -->
-
-<div class="box">
-
-Most effort went into **deriving the constraints** (D4, conservation) — getting the structure right kept the network small and training short.
-
-</div>
-
 </div>
 </div>
 
 
 --
 
-## Snellius GPU hours top 5
+## Snellius GPU hours top 1 - What project is this one?
 
-![Snellius GPU hours top 5](assets/snellius_gpu_hours_top5_placeholder.png)
-<!-- .element: style="width:100%; border-radius:6px;" -->
+2026-05 gpuuva077  scur0057         40907:56:48         0:00:00
+Totals for this user                40907:56:48         0:00:00
 
----
-
-## Takeaways
-- It is possible to learn collision operators of LBM. Supposedly all operators are possible.
-- By applying physics-informed constraints such as GAVG, the model is more accurate than MLP with the same layer number.
-- Train the model with dataset with complex physics embedded makes the model "smarter".
-- ResNet can help catch the nuance of chaotic system.
 
 ---
 
