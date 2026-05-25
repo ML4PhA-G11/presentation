@@ -34,7 +34,8 @@
 </div>
 
 <div class="box" style="text-align:center;">
-Macroscopic nonlinear: $(\mathbf{u} \cdot \nabla)\mathbf{u}$ vs. mesoscopic: the product of $f_i$ (the collision operator)
+Macroscopic nonlinear: $(\mathbf{u} \cdot \nabla)\mathbf{u}$ vs.<br>
+mesoscopic: the product of $f_i$ (the collision operator)
 </div>
 
 <div class="box" style="text-align:center;">
