@@ -1,8 +1,8 @@
 <!-- .slide: class="tc title" -->
 
-# Learning the Lattice Boltzmann<br>Collision Operator
+# Learning Nonlinear Physics
 
-### A Physics-Informed Machine Learning prototype
+### Physics-Informed Machine Learning of Lattice Boltzmann Collision Operator
 
 <img src="assets/teaser.gif" style="height:230px; border-radius:8px; box-shadow:0 4px 15px rgba(0,0,0,0.25);" alt="Karman vortex street teaser">
 
@@ -18,7 +18,7 @@
 ### The challenge
 
 - **Nonlinear** — Navier–Stokes advection
-- **Chaotic** — tiny perturbations → large divergence
+- **Chaotic** — tiny perturbations → large divergence ("butterfly effect")
 - **Expensive** — fine grids, long runs
 
 </div>
@@ -33,10 +33,10 @@
 </div>
 </div>
 
+Macroscopic nonlinear:  $(\mathbf{u} \cdot \nabla)\mathbf{u}$ vs. mesoscopic: the product of $f_i (the collision operator)
+
 <div class="box" style="text-align:center;">
-
 Each step = **stream** (linear, exact) + **collide** (nonlinear, local). Only collision is hard.
-
 </div>
 
 ---
@@ -52,18 +52,26 @@ $$ \Omega(f) \sim \int (f'f_1' - f f_1)\, d\Omega $$
 
 In LBM it relaxes toward a **quadratic** equilibrium:
 
-$$ f_i^{\text{post}} = f_i^{\text{pre}} + \tfrac{1}{\tau}\!\left(f_i^{\text{eq}}-f_i^{\text{pre}}\right) $$
+$$ f_i^{\text{post}} = f_i^{\text{pre}} - \tfrac{1}{\tau}\left(f_i^{\text{eq}}-f_i^{\text{pre}}\right) $$
+
+</div>
+</div>
+
+---
+
+## Learn the nonlinear part via NN architecture GAVG
+<div class="cols">
+<div>
+
 
 We learn this map $\mathbb{R}^9\!\to\!\mathbb{R}^9$, keep streaming exact. Conservation pins **3 of 9** components → the net predicts only **6 DoFs**; D4 symmetry is enforced **by construction (GAVG)**.
 
 </div>
 <div>
 
-RMS *relative* error <span class="muted">(Corbetta 2023)</span>:
+MSRE <span class="muted">(Corbetta 2023)</span>:
 
-$$ \mathcal{L} = \sqrt{\frac{1}{Q}\sum_i\!\left(\frac{y_i-\hat{y}_i}{y_i+\varepsilon}\right)^{\!2}} $$
-
-Relative → weights the rare **low-population** directions, where instabilities are born.
+$$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{post}}}{f_i^{\text{post}}}\right)^{2} $$
 
 ![Training loss](assets/training_loss.png)
 <!-- .element: style="width:100%; border-radius:6px;" -->
@@ -147,7 +155,7 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 <div class="box" style="text-align:center; margin-top:8px;">
 
 Same wake, same shedding frequency was expected —> mass & momentum conserved <span class="highlight">exactly</span> in both.
-Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry break?
+Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry break? Fail to catch chaotic butterfly effect?
 
 </div>
 
@@ -180,6 +188,33 @@ x = Add()([x, residual])          # corrects either way
 
 </div>
 </div>
+
+
+---
+
+## We caught the butterfly!
+
+
+Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
+
+<div class="cols" style="margin-top:10px;">
+<div>
+<img src="assets/karman_classical.gif" style="width:100%; border-radius:6px;" alt="Classical LBM">
+<p class="cap" style="text-align:center;">Classical BGK-LBM</p>
+</div>
+<div>
+<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (learned collision)</p>
+</div>
+</div>
+
+<div class="box" style="text-align:center; margin-top:8px;">
+
+Same wake, same shedding frequency was expected —> mass & momentum conserved <span class="highlight">exactly</span> in both.
+Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry break? Fail to catch chaotic butterfly effect?
+
+</div>
+
 
 ---
 
@@ -302,3 +337,11 @@ Output accepted only as **scripts** — fixed seeds, pinned configs, one command
 
 </div>
 </div>
+
+---
+
+## Appendix — training and computing time and tips
+
+training --> batch size, OOO error
+LBM --> GPU
+
