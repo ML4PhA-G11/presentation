@@ -521,8 +521,7 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 
 <div class="box" style="text-align:center; margin-top:8px;">
 
-Same wake, same shedding frequency was expected —> mass & momentum conserved <span class="highlight">exactly</span> in both.
-Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry break? Fail to catch chaotic butterfly effect?
+Learn from complex data helps the model smarter.
 
 </div>
 
@@ -544,6 +543,7 @@ Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry brea
 - **Sensitivity to initial conditions**. Are the ML model results easily reproducible and general?
 - **Boundary condition handling**
 - **Training for chaotic systems**
+- **Model generalization**
 
 ---
 
