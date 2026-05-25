@@ -145,6 +145,7 @@ Taylor–Green vortex evolution at increasing timesteps
 
 </div>
 ---
+---
 
 ## What Happens if We Train a Neural Network?
 
@@ -154,7 +155,7 @@ Taylor–Green vortex evolution at increasing timesteps
 <!-- INITIAL 3-COLUMN STORY -->
 <!-- ====================================================== -->
 
-<div class="fragment fade-out" data-fragment-index="4">
+<div class="fragment fade-out" data-fragment-index="5">
 
 <div class="cols">
 
@@ -269,12 +270,10 @@ height:150px;
 <br>
 
 <!-- ========================================= -->
-<!-- SMALL DECAY PLOT -->
+<!-- DECAY PLOT STACK -->
 <!-- ========================================= -->
 
 <div
-class="fragment fade-out"
-data-fragment-index="3"
 style="
 height:260px;
 display:flex;
@@ -284,32 +283,51 @@ margin-top:auto;
 "
 >
 
+<div class="r-stack" style="width:100%;">
+
+<!-- SYMMETRY ONLY -->
+
+<div
+class="fragment current-visible"
+data-fragment-index="2"
+>
+
+<img src="assets/symmetry_decay.png" style="width:75%;">
+
+</div>
+
+<!-- CONSERVATION -->
+
+<div
+class="fragment current-visible"
+data-fragment-index="3"
+>
+
 <img src="assets/conservation_decay.png" style="width:75%;">
 
 </div>
 
-<!-- ========================================= -->
-<!-- FULL ABLATION PLOT -->
-<!-- ========================================= -->
+<!-- FULL ABLATION -->
 
 <div
-class="fragment fade-in"
-data-fragment-index="3"
-style="
-position:absolute;
-top:350px;
-right:0px;
-width:42%;
-text-align:center;
-"
+class="fragment"
+data-fragment-index="4"
 >
 
-<img src="assets/ablation_decay.png" style="width:75%;">
+<img src="assets/ablation_decay.png" style="width:100%;">
 
 </div>
 
-<p class="cap" style="font-size:0.75em;">
-Reduced long-time drift in velocity decay
+</div>
+
+</div>
+
+<p
+class="cap fragment fade-out"
+data-fragment-index="5"
+style="font-size:0.75em;"
+>
+Progressive improvement in long-time velocity decay
 </p>
 
 </div>
@@ -324,7 +342,7 @@ Reduced long-time drift in velocity decay
 
 <div
 class="fragment fade-in"
-data-fragment-index="4"
+data-fragment-index="5"
 style="width:100%;"
 >
 
