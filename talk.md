@@ -496,6 +496,28 @@ Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry brea
 
 </div>
 
+--
+
+## Evaluation of NN Performance
+
+<div style="display:flex; justify-content:center; align-items:center; height:60vh;">
+<img src="assets/Karman_NN_evaluation.png" style="width:100%; border-radius:6px;" alt="ML-EV">
+</div>
+
+<div class="box" style="text-align:center; margin-top:8px;">
+
+Model error throughout a simulation compared to classical BGK simulation of Karman Vortex Street
+
+</div>
+
+--
+
+## Extra: How does Karman Vortex Look in Reality?
+
+<div style="display:flex; justify-content:center; align-items:center; height:60vh;">
+<img src="assets/Karman_reality.png" style="width:100%; border-radius:6px;" alt="ML-EV">
+</div>
+
 ---
 
 ## Beyond GAVG — ResNet + GAVG
