@@ -197,10 +197,23 @@ Taylor–Green vortex evolution at increasing timesteps
 
 ## What Happens if We Train a Neural Network?
 
+<div class="r-stack">
+
+<!-- ====================================================== -->
+<!-- INITIAL 3-COLUMN STORY -->
+<!-- ====================================================== -->
+
+<div class="fragment fade-out" data-fragment-index="5">
+
 <div class="cols">
+
+<!-- ========================================= -->
+<!-- NAIVE -->
+<!-- ========================================= -->
 
 <div
   class="fragment fade-in"
+  data-fragment-index="0"
   style="
     width:30%;
     display:flex;
@@ -215,6 +228,7 @@ Taylor–Green vortex evolution at increasing timesteps
 - Errors accumulate during rollout
 
 <br>
+
 <div style="
 height:260px;
 display:flex;
@@ -230,8 +244,13 @@ Vortex structure breaks down during long-time evolution
 
 </div>
 
+<!-- ========================================= -->
+<!-- SYMMETRY -->
+<!-- ========================================= -->
+
 <div
   class="fragment fade-in"
+  data-fragment-index="1"
   style="
     width:30%;
     display:flex;
@@ -261,8 +280,13 @@ Symmetry averaging restores coherent vortex structure
 
 </div>
 
+<!-- ========================================= -->
+<!-- CONSERVATION -->
+<!-- ========================================= -->
+
 <div
   class="fragment fade-in"
+  data-fragment-index="2"
   style="
     width:30%;
     display:flex;
@@ -290,53 +314,123 @@ height:150px;
 </div>
 
 </div>
+
 <br>
 
-<div style="
+<!-- ========================================= -->
+<!-- DECAY PLOT STACK -->
+<!-- ========================================= -->
+
+<div
+style="
 height:260px;
 display:flex;
 align-items:flex-end;
 justify-content:center;
 margin-top:auto;
-">
-<img src="assets/conservation_decay.png" style="width:75%;">
+"
+>
+
+<div class="r-stack" style="width:100%;">
+
+<!-- SYMMETRY ONLY -->
+
+<div
+class="fragment current-visible"
+data-fragment-index="2"
+>
+
+<img src="assets/symmetry_decay.png" style="width:75%;">
+
 </div>
 
-<p class="cap" style="font-size:0.75em;">
-Reduced long-time drift in velocity decay
+<!-- CONSERVATION -->
+
+<div
+class="fragment current-visible"
+data-fragment-index="3"
+>
+
+<img src="assets/conservation_decay.png" style="width:75%;">
+
+</div>
+
+<!-- FULL ABLATION -->
+
+<div
+class="fragment"
+data-fragment-index="4"
+>
+
+<img src="assets/ablation_decay.png" style="width:100%;">
+
+</div>
+
+</div>
+
+</div>
+
+<p
+class="cap fragment fade-out"
+data-fragment-index="5"
+style="font-size:0.75em;"
+>
+Progressive improvement in long-time velocity decay
 </p>
 
 </div>
 
 </div>
 
----
+</div>
 
-## Combining All Constraints
+<!-- ====================================================== -->
+<!-- FINAL QUALITATIVE COMPARISON -->
+<!-- ====================================================== -->
+
+<div
+class="fragment fade-in"
+data-fragment-index="5"
+style="width:100%;"
+>
 
 <div class="cols">
 
-<div style="width:60%;">
+<!-- ========================================= -->
+<!-- ANALYTIC -->
+<!-- ========================================= -->
 
-<img src="assets/ablation_decay.png" style="width:90%;">
+<div style="width:50%; text-align:center;">
+
+<img src="assets/analytic_t900_highcontrast.png" style="width:70%;">
 
 <p class="cap">
-Velocity decay comparison for all model variants
+Analytical BGK solution
 </p>
 
 </div>
 
-<div style="width:40%;">
+<!-- ========================================= -->
+<!-- TRAINED -->
+<!-- ========================================= -->
 
-<img src="assets/naive_t900.png" style="width:31%;">
-<img src="assets/symmetry_t900.png" style="width:31%;">
-<img src="assets/fully_constrained_t900.png" style="width:31%;">
+<div style="width:50%; text-align:center;">
+
+<img src="assets/fully_constrained_t900.png" style="width:70%;">
 
 <p class="cap">
-Naive → Symmetry → Fully constrained
+Fully constrained ML-LBM
 </p>
 
-<br>
+</div>
+
+</div>
+
+<div class="box" style="margin-top:20px; text-align:center;">
+
+The constrained model preserves both the analytical velocity decay and coherent vortex structure during long-time recursive simulations.
+
+</div>
 
 </div>
 
