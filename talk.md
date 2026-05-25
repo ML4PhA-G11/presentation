@@ -97,36 +97,24 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 
 <br>
 
-<div class="cols">
-
-<div style="width:45%;">
+<div style="text-align:center;">
 
 ### Analytical decay
 
 $$
-u(t) \sim e^{-2 \nu k^2 t}
+u(t) = u_0 e^{-2 \nu k^2 t}
 $$
 
+### Initial condition
+<div style="font-size:0.9em;">
+$$
+u_x=u_0\sin(kx)\cos(ky)
+$$
+
+$$
+u_y=-u_0\cos(kx)\sin(ky)
+$$
 </div>
-
-<div
-style="
-width:55%;
-text-align:center;
-display:flex;
-flex-direction:column;
-justify-content:center;
-"
->
-
-<img src="assets/analytic_decay.png" style="width:80%;">
-
-<p class="cap">
-Analytical velocity decay
-</p>
-
-</div>
-
 </div>
 
 </div>
@@ -156,7 +144,6 @@ Taylor–Green vortex evolution at increasing timesteps
 </div>
 
 </div>
-
 ---
 
 ## What Happens if We Train a Neural Network?
