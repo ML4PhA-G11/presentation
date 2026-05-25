@@ -34,26 +34,64 @@
 </div>
 
 <div class="box" style="text-align:center;">
-Macroscopic nonlinear: $(\mathbf{u} \cdot \nabla)\mathbf{u}$ vs.<br>
-mesoscopic: the product of $f_i$ (the collision operator)
+Macroscopic nonlinearity: $(\mathbf{u} \cdot \nabla)\mathbf{u}$<br>
+Mesoscopic nonlinearity: the product of $f_i$ (the collision operator)
 </div>
 
 <div class="box" style="text-align:center;">
-Each step = <strong>stream</strong> (linear, exact) + <strong>collide</strong> (nonlinear, local). Only collision is hard.
+Each LBM step = <strong>stream</strong> (linear, exact) + <strong>collide</strong> (nonlinear, local). Only collision is hard.
 </div>
+
+The nonlinearity lives in the **collision** — products of populations, like Boltzmann's binary collision integral.
+
+$$ \Omega(f) \sim \int (f'f_1' - f f_1)\, d\Omega $$
+
+--
+
+## The collision term (Stosszahlansatz) and molecular chaos
+
+<div class="cols">
+<div>
+
+### Stosszahlansatz
+
+Boltzmann's **collision number ansatz**: count binary collisions in phase space, assuming colliding pairs are **statistically independent** before they meet.
+
+$$ \left(\frac{\partial f}{\partial t}\right)_{\text{coll}} = \int (f'f_1' - f f_1)\, g\, \sigma\, d\Omega\, d^3 v_1 $$
+
+- $f, f_1$ — pre-collision distributions
+- $f', f_1'$ — post-collision distributions
+- product form ⇒ the **nonlinearity** in the kinetic equation
+
+</div>
+<div>
+
+### Molecular chaos (*Stosszahlansatz*)
+
+The factorization
+$$ f^{(2)}(v, v_1) \approx f(v)\, f(v_1) $$
+is the **molecular chaos** hypothesis — and it is precisely what makes the H-theorem (and irreversibility) follow from time-reversible mechanics.
+
+<div class="box" style="text-align:center;">
+In LBM this same product structure reappears as $f_i^{\text{eq}}$ being **quadratic** in the moments — the discrete echo of Boltzmann's nonlinear collision.
+</div>
+
+</div>
+</div>
+
+<p class="cap">↓ branch slide — press <strong>Esc</strong> for overview, or use ↑ to return to the parent slide.</p>
 
 ---
 
 ## Learn the nonlinear part
 
-The nonlinearity lives in the **collision** — products of populations, like Boltzmann's binary collision integral.
+
 
 <div class="cols">
 <div>
 
-$$ \Omega(f) \sim \int (f'f_1' - f f_1)\, d\Omega $$
 
-In LBM it relaxes toward a **quadratic** equilibrium:
+In LBM it relaxes toward a **quadratic** equilibrium in BGK approximation (Bhatnagar–Gross–Krook operator):
 
 $$ f_i^{\text{post}} = f_i^{\text{pre}} - \tfrac{1}{\tau}\left(f_i^{\text{eq}}-f_i^{\text{pre}}\right) $$
 
@@ -318,6 +356,8 @@ Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry brea
 - **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; domain boundaries via surrogate models.
 - **Measure of Supression**. How much is the ML model supressing the anti-symmetry? Affects generalization.
 - **Sensitivity to initial conditions**. Are the ML model results easily reproducible and general?
+- **Boundary condition handling**
+- **Training for chaotic systems**
 
 ---
 
@@ -348,18 +388,7 @@ The thesis: *find the symmetries and invariants, then constrain the architecture
 
 ---
 
-## Appendix — Corbetta, Gabbana et al. (2023)
-
-*Toward learning Lattice Boltzmann collision operators.* EPJ-E **46**, 10 (2023).
-
-- introduces the learned-collision framing and the RMS-relative-error loss we adopt
-- D2Q9 lattice, BGK baseline, symmetry-aware networks
-
-<a href="https://arxiv.org/abs/2212.06124" target="_blank">arxiv:2212.06124</a>
-
----
-
-## Appendix — how this project was cooked
+## How this project was cooked
 
 <div class="cols">
 <div>
@@ -370,10 +399,18 @@ The thesis: *find the symmetries and invariants, then constrain the architecture
 | Tool calls (edits + runs) | *NN* |
 | Files touched | *NN* |
 | Training samples | 100&thinsp;000 |
+| Snellius Budeget | 15000+ GPU hours |
 
 <p class="cap">Placeholder counts — fill in from workspace logs.</p>
 
 </div>
+
+<div class="box">
+
+We appreciate the opportunity to propose our project.
+
+</div>
+
 <div>
 
 ![Workspace analysis](assets/workspace_analysis.png)
@@ -387,6 +424,24 @@ Most effort went into **deriving the constraints** (D4, conservation) — gettin
 
 </div>
 </div>
+
+---
+
+## Takeaways
+- It is possible to learn nonlinear Physics
+- By applying physics-informed constraints the training can be faster efficiently
+- Dataset of chaotic system provides more nutrition of physics to help learn better
+
+---
+
+## Appendix — Corbetta, Gabbana et al. (2023)
+
+*Toward learning Lattice Boltzmann collision operators.* EPJ-E **46**, 10 (2023).
+
+- introduces the learned-collision framing and the RMS-relative-error loss we adopt
+- D2Q9 lattice, BGK baseline, symmetry-aware networks
+
+<a href="https://arxiv.org/abs/2212.06124" target="_blank">arxiv:2212.06124</a>
 
 ---
 
