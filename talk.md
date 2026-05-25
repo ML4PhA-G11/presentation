@@ -578,7 +578,7 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 <p class="cap" style="text-align:center;">Classical BGK-LBM</p>
 </div>
 <div>
-<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
+<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
 </div>
 </div>
@@ -595,21 +595,20 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 <div>
 <img src="assets/karman_classical.gif" style="width:50%; border-radius:6px;" alt="Classical LBM">
 <p class="cap" style="text-align:center;">Numerical BGK-LBM</p>
-
-| NN Arch | Dataset | KVS |
-| :--- | :--- | :--- |
-| GAVG + ResNet | KVS | Pass |
-| GAVG + ResNet | TG | Fail |
-| GAVG | KVS | Fail/Numerically unstable |
-| GAVG | TG | Fail |
 </div>
 <div>
 <img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
+</div>
+<div class="cols" style="margin-top:10px;">
+<div>
 <img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
+<div>
 <img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, KVS dataset trained)</p>
+</div>
+<div>
 <img src="assets/karman_ml.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset)</p>
 </div>
@@ -623,7 +622,7 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 - **Push to 3D.** Same group-equivariance recipe on D3Q27.
 - **Boundary condition handling** Replace or reconstruct expensive boundary condition computation.
 - **Training for chaotic systems** Sensitivity to initial conditions.
-- **Model generalization** Trained model should apply to different scenarios governing by the same physics.
+- **Model generalization** Trained model should apply to different scenarios governing by the same physics; different Reynold numbers.
 - **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; domain boundaries via surrogate models.
 - **Measure of Supression**. How much is the ML model supressing the anti-symmetry? Affects generalization.
 
@@ -666,12 +665,14 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 
 <div class="cols">
 <div>
+
 | Metric | Count |
 |---|---|
 | Slack messages | 160 msg, 45 files |
 | Emails | 60+ |
 | Snellius Budeget unit | 30000+ |
 | Git repositories | 10 |
+
 </div>
 
 <div class="box">
@@ -684,7 +685,8 @@ We appreciate the opportunity to propose our project.
 
 ## Snellius GPU hours top 1 - What project is this one?
 
-2026-05 gpuuva077  scur0057         40907:56:48         0:00:00
+2026-05 gpuuva077  **scur0057**         **40907:56:48**         0:00:00
+
 Totals for this user                40907:56:48         0:00:00
 
 
