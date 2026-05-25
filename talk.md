@@ -488,18 +488,12 @@ x = Add()([x, residual])          # corrects either way
 </div>
 </div>
 
---
 
-## GAVG + ResNet trained with TG synthesis dataset
+---
 
-![TG synthesis comparison](assets/gavg_resnet_tg_synthesis_placeholder.png)
-<!-- .element: style="width:100%; border-radius:6px;" -->
+## GAVG + ResNet trained with TG synthesis dataset does not catch the chaotic behavior
 
-## GAVG + ResNet trained with KVS synthesis dataset verified with TG
-
-![TG synthesis comparison](assets/gavg_resnet_tg_synthesis_placeholder.png)
-<!-- .element: style="width:100%; border-radius:6px;" -->
-
+<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 
 ---
 
@@ -525,12 +519,36 @@ Learn from complex data helps the model smarter.
 
 </div>
 
---
 
-## GAVG + ResNet trained with TG synthesis dataset does not catch the chaotic behavior
+## Summary
+<div class="cols" style="margin-top:10px;">
+<div>
+<img src="assets/karman_classical.gif" style="width:100%; border-radius:6px;" alt="Classical LBM">
+<p class="cap" style="text-align:center;">Numerical BGK-LBM</p>
+</div>
+<div>
+<img src="assets/karman_ml.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset) (GAVG + ResNet, TG dataset is similar)</p>
+</div>
+</div>
 
+<div class="cols" style="margin-top:10px;">
+<div>
 <img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
+</div>
+<div>
+<img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG, KVS dataset trained)</p>
+</div>
+</div>
 
+| NN Arch | Dataset | KVS |
+| :--- | :--- | :--- |
+| GAVG | TG | Fail |
+| GAVG | KVS | Fail |
+| GAVG + ResNet | TG | Fail |
+| GAVG + ResNet | KVS | Pass |
 
 ---
 
