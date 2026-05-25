@@ -593,7 +593,7 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 ## Summary
 <div class="cols" style="margin-top:10px;">
 <div>
-<img src="assets/karman_classical.gif" style="width:100%; border-radius:6px;" alt="Classical LBM">
+<img src="assets/karman_classical.gif" style="width:50%; border-radius:6px;" alt="Classical LBM">
 <p class="cap" style="text-align:center;">Numerical BGK-LBM</p>
 
 | NN Arch | Dataset | KVS |
@@ -604,7 +604,7 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 | GAVG | TG | Fail |
 </div>
 <div>
-<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
 <img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
