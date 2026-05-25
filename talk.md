@@ -610,7 +610,7 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 <img src="assets/karman_ml.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset)</p>
 </div>
-<div>
+</div>
 
 ---
 
