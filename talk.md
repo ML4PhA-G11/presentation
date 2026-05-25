@@ -107,6 +107,9 @@ $$ f_i^{\text{post}} = f_i^{\text{pre}} - \tfrac{1}{\tau}\left(f_i^{\text{eq}}-f
 
 We learn this map $\mathbb{R}^9\!\to\!\mathbb{R}^9$, keep streaming exact. Conservation pins **3 of 9** components → the net predicts only **6 DoFs**; D4 symmetry is enforced **by construction (GAVG)**.
 
+![GAVG arch](assets/arch-GAVG.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
+
 </div>
 <div>
 
@@ -431,6 +434,7 @@ Most effort went into **deriving the constraints** (D4, conservation) — gettin
 - It is possible to learn nonlinear Physics
 - By applying physics-informed constraints the training can be faster efficiently
 - Dataset of chaotic system provides more nutrition of physics to help learn better
+- ResNet can catch the nuance of chaotic system
 
 ---
 
