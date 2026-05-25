@@ -1,6 +1,6 @@
 <!-- .slide: class="tc title" -->
 
-# Learning Nonlinear Physics
+# Learning Navier–Stokes
 
 ### Physics-Informed Machine Learning of Lattice Boltzmann Collision Operator
 
@@ -401,6 +401,11 @@ x = Add()([x, residual])          # corrects either way
 ![TG synthesis comparison](assets/gavg_resnet_tg_synthesis_placeholder.png)
 <!-- .element: style="width:100%; border-radius:6px;" -->
 
+## GAVG + ResNet trained with KVS synthesis dataset verified with TG
+
+![TG synthesis comparison](assets/gavg_resnet_tg_synthesis_placeholder.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
+
 
 ---
 
@@ -426,6 +431,12 @@ Same wake, same shedding frequency was expected —> mass & momentum conserved <
 Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry break? Fail to catch chaotic butterfly effect?
 
 </div>
+
+--
+
+## GAVG + ResNet trained with TG synthesis dataset does not catch the chaotic behavior
+
+<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 
 
 ---
@@ -483,6 +494,7 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 | Files touched | *NN* |
 | Training samples | 100&thinsp;000 |
 | Snellius Budeget | 15000+ GPU hours |
+| Code | git fame |
 
 <p class="cap">Placeholder counts — fill in from workspace logs.</p>
 
@@ -519,10 +531,10 @@ Most effort went into **deriving the constraints** (D4, conservation) — gettin
 ---
 
 ## Takeaways
-- It is possible to learn nonlinear Physics
-- By applying physics-informed constraints such as GAVG, the training can be accurate and faster efficiently than MLP
-- Dataset of chaotic system provides more nutrition of physics to help learn better
-- ResNet can help catch the nuance of chaotic system
+- It is possible to learn collision operators of LBM. Supposedly all operators are possible.
+- By applying physics-informed constraints such as GAVG, the model is more accurate than MLP with the same layer number.
+- Train the model with dataset with complex physics embedded makes the model "smarter".
+- ResNet can help catch the nuance of chaotic system.
 
 ---
 
