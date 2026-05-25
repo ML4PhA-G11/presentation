@@ -346,7 +346,7 @@ Naive → Symmetry → Fully constrained
 
 <!-- .slide: class="tc" -->
 
-## Kármán vortex street
+## However, Kármán vortex street challenges
 
 Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 
@@ -391,12 +391,15 @@ x = Add()([x, residual])          # corrects either way
 ![ResNet experiment](assets/training-loss-gavg_vs_resnet.png)
 <!-- .element: style="width:100%; border-radius:6px;" -->
 
-- lower RMSRE at equal width
-- deeper plain stacks stall; residual ones keep improving
-- residual framing matches a near-identity operator
+</div>
+</div>
 
-</div>
-</div>
+--
+
+## GAVG + ResNet trained with TG synthesis dataset
+
+![TG synthesis comparison](assets/gavg_resnet_tg_synthesis_placeholder.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
 
 
 ---
@@ -452,6 +455,20 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 
 <p class="cap">✓ = validated · N/A = not yet attempted.</p>
 
+--
+
+## LENN
+
+![LENN placeholder](assets/lenn_placeholder.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
+
+--
+
+## NCO
+
+![NCO placeholder](assets/nco_placeholder.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
+
 ---
 
 ## How this project was cooked
@@ -491,13 +508,21 @@ Most effort went into **deriving the constraints** (D4, conservation) — gettin
 </div>
 </div>
 
+
+--
+
+## Snellius GPU hours top 5
+
+![Snellius GPU hours top 5](assets/snellius_gpu_hours_top5_placeholder.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
+
 ---
 
 ## Takeaways
 - It is possible to learn nonlinear Physics
-- By applying physics-informed constraints the training can be faster efficiently
+- By applying physics-informed constraints such as GAVG, the training can be accurate and faster efficiently than MLP
 - Dataset of chaotic system provides more nutrition of physics to help learn better
-- ResNet can catch the nuance of chaotic system
+- ResNet can help catch the nuance of chaotic system
 
 ---
 
