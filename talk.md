@@ -105,7 +105,7 @@ $$ f_i^{\text{post}} = f_i^{\text{pre}} - \tfrac{1}{\tau}\left(f_i^{\text{eq}}-f
 <div>
 
 
-We learn this map $\mathbb{R}^9\!\to\!\mathbb{R}^9$, keep streaming exact. Conservation pins **3 of 9** components → the net predicts only **6 DoFs**; D4 symmetry is enforced **by construction (GAVG)**.
+We learn this map $\mathbb{R}^9\!\to\!\mathbb{R}^9$, keep streaming exact. Conservation pins **3 of 9** components → the net predicts only **6 DoFs**; D4 symmetry is enforced **by construction (GAVG)**<span class="muted">(Corbetta 2023)</span>.
 
 ![GAVG arch](assets/arch-GAVG.png)
 <!-- .element: style="width:100%; border-radius:6px;" -->
@@ -370,7 +370,7 @@ Yet the symmetry is not broken in the ML scenario. Suppressing the symmetry brea
 
 ---
 
-## Beyond GAVG — ResNet
+## Beyond GAVG — ResNet + GAVG
 
 <div class="cols">
 <div>
@@ -451,18 +451,6 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 | **MRT** | NCO | N/A | N/A | N/A |
 
 <p class="cap">✓ = validated · N/A = not yet attempted.</p>
-
----
-
-## Future work — more
-
-- **Deeper naive models.** Does raw capacity alone ever stabilise the loop — or is structure (D4 + conservation) irreplaceable?
-
-<div class="box">
-
-The thesis: *find the symmetries and invariants, then constrain the architecture so they can't be violated* — rather than hoping a big network plus a soft loss learns them.
-
-</div>
 
 ---
 
