@@ -145,7 +145,6 @@ Taylor–Green vortex evolution at increasing timesteps
 
 </div>
 ---
----
 
 ## What Happens if We Train a Neural Network?
 
@@ -387,6 +386,7 @@ The constrained model preserves both the analytical velocity decay and coherent 
 </div>
 
 </div>
+
 ---
 
 <!-- .slide: class="tc" -->
