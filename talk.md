@@ -87,7 +87,7 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 
 <div class="cols">
 
-<div>
+<div style="width:48%;">
 
 ### Why Taylor–Green?
 
@@ -97,32 +97,60 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 
 <br>
 
+<div class="cols">
+
+<div style="width:45%;">
+
 ### Analytical decay
 
 $$
 u(t) \sim e^{-2 \nu k^2 t}
 $$
 
-<br>
-
 </div>
 
-<div>
+<div
+style="
+width:55%;
+text-align:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+"
+>
 
-<img src="assets/tgv_t0.png" style="width:31%;">
-<img src="assets/tgv_t500.png" style="width:31%;">
-<img src="assets/tgv_t900.png" style="width:31%;">
-
-<p class="cap">
-Taylor–Green vortex evolution at increasing timesteps
-</p>
-
-<br>
-
-<img src="assets/analytic_decay.png" style="width:75%;">
+<img src="assets/analytic_decay.png" style="width:80%;">
 
 <p class="cap">
 Analytical velocity decay
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div style="width:52%;">
+
+<div style="
+display:grid;
+grid-template-columns: 1fr 1fr;
+gap:2px;
+justify-items:center;
+align-items:center;
+margin-bottom:10px;
+">
+
+<img src="assets/analytic_t0.png" style="width:85%;">
+<img src="assets/analytic_t20.png" style="width:85%;">
+<img src="assets/analytic_t50.png" style="width:85%;">
+<img src="assets/analytic_t900.png" style="width:85%;">
+
+</div>
+
+<p class="cap">
+Taylor–Green vortex evolution at increasing timesteps
 </p>
 
 </div>
@@ -135,7 +163,15 @@ Analytical velocity decay
 
 <div class="cols">
 
-<div class="fragment fade-in">
+<div
+  class="fragment fade-in"
+  style="
+    width:30%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  "
+>
 
 ### Naive MLP
 
@@ -143,8 +179,14 @@ Analytical velocity decay
 - Errors accumulate during rollout
 
 <br>
-
+<div style="
+height:260px;
+display:flex;
+align-items:flex-end;
+justify-content:center;
+">
 <img src="assets/naive_t900.png" style="width:75%;">
+</div>
 
 <p class="cap" style="font-size:0.75em;">
 Vortex structure breaks down during long-time evolution
@@ -152,16 +194,30 @@ Vortex structure breaks down during long-time evolution
 
 </div>
 
-<div class="fragment fade-in">
+<div
+  class="fragment fade-in"
+  style="
+    width:30%;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  "
+>
 
 ### Lattice Symmetry
 
-- Collision operator should respect D4 lattice symmetry
-- Outputs are averaged over symmetry transforms
+- Outputs are averaged over symmetry transforms to respect D4 lattice symmetry
 
 <br>
 
-<img src="assets/symmetry_t900.png" style="width:90%;">
+<div style="
+height:260px;
+display:flex;
+align-items:flex-end;
+justify-content:center;
+">
+<img src="assets/symmetry_t900.png" style="width:75%;">
+</div>
 
 <p class="cap" style="font-size:0.75em;">
 Symmetry averaging restores coherent vortex structure
@@ -169,21 +225,46 @@ Symmetry averaging restores coherent vortex structure
 
 </div>
 
-<div class="fragment fade-in">
+<div
+  class="fragment fade-in"
+  style="
+    width:30%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+  "
+>
 
 ### Conservation
 
-$$
-\sum_i f_i = \rho
-$$
+<div style="
+font-size:1.0em;
+line-height:1.2;
+margin-top:10px;
+margin-bottom:10px;
+height:150px;
+">
 
-$$
-\sum_i f_i c_i = \rho u
-$$
+<div style="margin-bottom:15px;">
+\(\sum_i f_i = \rho\)
+</div>
 
+<div>
+\(\sum_i f_i c_i = \rho u\)
+</div>
+
+</div>
 <br>
 
-<img src="assets/conservation_decay.png" style="width:90%;">
+<div style="
+height:260px;
+display:flex;
+align-items:flex-end;
+justify-content:center;
+margin-top:auto;
+">
+<img src="assets/conservation_decay.png" style="width:75%;">
+</div>
 
 <p class="cap" style="font-size:0.75em;">
 Reduced long-time drift in velocity decay
@@ -201,7 +282,7 @@ Reduced long-time drift in velocity decay
 
 <div style="width:60%;">
 
-<img src="assets/combined_velocity_decay.png" style="width:100%;">
+<img src="assets/ablation_decay.png" style="width:90%;">
 
 <p class="cap">
 Velocity decay comparison for all model variants
