@@ -480,7 +480,7 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 
 <div class="cols" style="margin-top:10px;">
 <div>
-<img src="assets/karman_classical.gif" style="width:100%; border-radius:6px;" alt="Classical LBM">
+<img src="assets/karman_classical.gif" style="width:50%; border-radius:6px;" alt="Classical LBM">
 <p class="cap" style="text-align:center;">Classical BGK-LBM</p>
 </div>
 <div>
@@ -561,10 +561,13 @@ x = Add()([x, residual])          # corrects either way
 </div>
 </div>
 
+<div class="box" style="text-align:center; margin-top:8px;">
+The model has potential to catch some nuance but does not know how to do it exactly.
+</div>
 
 ---
 
-## We caught the butterfly!
+## We caught the butterfly by training with KVS dataset!
 
 
 Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
@@ -575,15 +578,14 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 <p class="cap" style="text-align:center;">Classical BGK-LBM</p>
 </div>
 <div>
-<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
-<p class="cap" style="text-align:center;">ML-LBM (learned collision)</p>
+<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
 </div>
 </div>
 
 <div class="box" style="text-align:center; margin-top:8px;">
-
-Learn from complex data helps the model smarter.
-
+KVS dataset provides information of chaotic system that Taylor-Green dataset doesn't.
+Furthermore, this model works well for TG simulation: learn from complex data helps the model smarter.
 </div>
 
 ---
@@ -604,11 +606,11 @@ Learn from complex data helps the model smarter.
 <div>
 <img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
-<img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
-<img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, KVS dataset trained)</p>
-<img src="assets/karman_ml.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<img src="assets/karman_ml.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset)</p>
 </div>
 </div>
