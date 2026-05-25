@@ -148,10 +148,23 @@ Taylor–Green vortex evolution at increasing timesteps
 
 ## What Happens if We Train a Neural Network?
 
+<div class="r-stack">
+
+<!-- ====================================================== -->
+<!-- INITIAL 3-COLUMN STORY -->
+<!-- ====================================================== -->
+
+<div class="fragment fade-out" data-fragment-index="4">
+
 <div class="cols">
+
+<!-- ========================================= -->
+<!-- NAIVE -->
+<!-- ========================================= -->
 
 <div
   class="fragment fade-in"
+  data-fragment-index="0"
   style="
     width:30%;
     display:flex;
@@ -166,6 +179,7 @@ Taylor–Green vortex evolution at increasing timesteps
 - Errors accumulate during rollout
 
 <br>
+
 <div style="
 height:260px;
 display:flex;
@@ -181,8 +195,13 @@ Vortex structure breaks down during long-time evolution
 
 </div>
 
+<!-- ========================================= -->
+<!-- SYMMETRY -->
+<!-- ========================================= -->
+
 <div
   class="fragment fade-in"
+  data-fragment-index="1"
   style="
     width:30%;
     display:flex;
@@ -212,8 +231,13 @@ Symmetry averaging restores coherent vortex structure
 
 </div>
 
+<!-- ========================================= -->
+<!-- CONSERVATION -->
+<!-- ========================================= -->
+
 <div
   class="fragment fade-in"
+  data-fragment-index="2"
   style="
     width:30%;
     display:flex;
@@ -241,16 +265,47 @@ height:150px;
 </div>
 
 </div>
+
 <br>
 
-<div style="
+<!-- ========================================= -->
+<!-- SMALL DECAY PLOT -->
+<!-- ========================================= -->
+
+<div
+class="fragment fade-out"
+data-fragment-index="3"
+style="
 height:260px;
 display:flex;
 align-items:flex-end;
 justify-content:center;
 margin-top:auto;
-">
+"
+>
+
 <img src="assets/conservation_decay.png" style="width:75%;">
+
+</div>
+
+<!-- ========================================= -->
+<!-- FULL ABLATION PLOT -->
+<!-- ========================================= -->
+
+<div
+class="fragment fade-in"
+data-fragment-index="3"
+style="
+position:absolute;
+top:350px;
+right:0px;
+width:42%;
+text-align:center;
+"
+>
+
+<img src="assets/ablation_decay.png" style="width:75%;">
+
 </div>
 
 <p class="cap" style="font-size:0.75em;">
@@ -261,38 +316,59 @@ Reduced long-time drift in velocity decay
 
 </div>
 
----
+</div>
 
-## Combining All Constraints
+<!-- ====================================================== -->
+<!-- FINAL QUALITATIVE COMPARISON -->
+<!-- ====================================================== -->
+
+<div
+class="fragment fade-in"
+data-fragment-index="4"
+style="width:100%;"
+>
 
 <div class="cols">
 
-<div style="width:60%;">
+<!-- ========================================= -->
+<!-- ANALYTIC -->
+<!-- ========================================= -->
 
-<img src="assets/ablation_decay.png" style="width:90%;">
+<div style="width:50%; text-align:center;">
+
+<img src="assets/analytic_t900_highcontrast.png" style="width:70%;">
 
 <p class="cap">
-Velocity decay comparison for all model variants
+Analytical BGK solution
 </p>
 
 </div>
 
-<div style="width:40%;">
+<!-- ========================================= -->
+<!-- TRAINED -->
+<!-- ========================================= -->
 
-<img src="assets/naive_t900.png" style="width:31%;">
-<img src="assets/symmetry_t900.png" style="width:31%;">
-<img src="assets/fully_constrained_t900.png" style="width:31%;">
+<div style="width:50%; text-align:center;">
+
+<img src="assets/fully_constrained_t900.png" style="width:70%;">
 
 <p class="cap">
-Naive → Symmetry → Fully constrained
+Fully constrained ML-LBM
 </p>
 
-<br>
+</div>
+
+</div>
+
+<div class="box" style="margin-top:20px; text-align:center;">
+
+The constrained model preserves both the analytical velocity decay and coherent vortex structure during long-time recursive simulations.
 
 </div>
 
 </div>
 
+</div>
 ---
 
 <!-- .slide: class="tc" -->
