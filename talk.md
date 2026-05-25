@@ -33,10 +33,12 @@
 </div>
 </div>
 
-Macroscopic nonlinear:  $(\mathbf{u} \cdot \nabla)\mathbf{u}$ vs. mesoscopic: the product of $f_i (the collision operator)
+<div class="box" style="text-align:center;">
+Macroscopic nonlinear: $(\mathbf{u} \cdot \nabla)\mathbf{u}$ vs. mesoscopic: the product of $f_i$ (the collision operator)
+</div>
 
 <div class="box" style="text-align:center;">
-Each step = **stream** (linear, exact) + **collide** (nonlinear, local). Only collision is hard.
+Each step = <strong>stream</strong> (linear, exact) + <strong>collide</strong> (nonlinear, local). Only collision is hard.
 </div>
 
 ---
