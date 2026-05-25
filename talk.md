@@ -549,7 +549,18 @@ x = Add()([x, residual])          # corrects either way
 
 ## GAVG + ResNet trained with TG synthesis dataset does not catch the chaotic behavior
 
-<img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+
+<div class="cols" style="margin-top:10px;">
+<div>
+<img src="assets/karman_classical.gif" style="width:100%; border-radius:6px;" alt="Classical LBM">
+<p class="cap" style="text-align:center;">Classical BGK-LBM</p>
+</div>
+<div>
+<img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
+</div>
+</div>
+
 
 ---
 
@@ -585,17 +596,20 @@ Learn from complex data helps the model smarter.
 
 | NN Arch | Dataset | KVS |
 | :--- | :--- | :--- |
-| GAVG | TG | Fail |
-| GAVG + ResNet | TG | Fail |
 | GAVG + ResNet | KVS | Pass |
+| GAVG + ResNet | TG | Fail |
+| GAVG | KVS | Fail/Numerically unstable |
+| GAVG | TG | Fail |
 </div>
 <div>
 <img src="assets/karman-nn_velocity_field-trained.karman.dataset.res0250.nstep30000.perstep0001.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, KVS dataset trained)</p>
+<img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
 <img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, KVS dataset trained)</p>
 <img src="assets/karman_ml.gif" style="width:100%; border-radius:6px;" alt="ML-LBM">
-<p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset) (GAVG + ResNet, TG dataset is similar)</p>
+<p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset)</p>
 </div>
 </div>
 
