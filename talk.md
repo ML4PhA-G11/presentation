@@ -136,7 +136,7 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 
 <div class="cols">
 
-<div style="width:48%;">
+<div style="width:54%;">
 
 ### Why Taylor–Green?
 
@@ -146,7 +146,7 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 
 <br>
 
-<div style="text-align:center;">
+<div style="text-align:center; margin-top:18px;">
 
 ### Analytical decay
 
@@ -168,7 +168,7 @@ $$
 
 </div>
 
-<div style="width:52%;">
+<div style="width:46%;">
 
 <div style="
 display:grid;
@@ -193,6 +193,40 @@ Taylor–Green vortex evolution at increasing timesteps
 </div>
 
 </div>
+
+--
+
+# Taylor–Green analytical solution
+
+### Velocity field
+
+$$
+u_x(x,y,t)=u_0\sin(kx)\cos(ky)e^{-2\nu k^2 t}
+$$
+
+$$
+u_y(x,y,t)=-u_0\cos(kx)\sin(ky)e^{-2\nu k^2 t}
+$$
+
+### Pressure field
+
+$$
+p(x,y,t)=p_0-\frac{\rho u_0^2}{4}[\cos(2kx)+\cos(2ky)]e^{-4\nu k^2 t}
+$$
+
+--
+
+# Velocity field evolution across model variants
+
+<img
+src="assets/tg_velocity_field_grid.png"
+style="
+width:100%;
+border-radius:6px;
+margin-top:10px;
+"
+/>
+
 ---
 
 ## What Happens if We Train a Neural Network?
