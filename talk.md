@@ -84,56 +84,146 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 
 ---
 
-## Taylor–Green vortex — the benchmark
+## Taylor–Green Vortex as a Stability Benchmark
 
 <div class="cols">
+
 <div>
 
-A decaying array of counter-rotating vortices with a **closed-form** analytic solution — exact ground truth.
+### Why Taylor–Green?
 
-- periodic box, no walls
-- velocity decays as $e^{-2\nu k^2 t}$
-- every model must match this curve
+- Periodic array of decaying vortices
+- Analytical solution --> long-time recursive stability test
+- Tiny ML errors accumulate over many timesteps
+
+<br>
+
+### Analytical decay
+
+$$
+u(t) \sim e^{-2 \nu k^2 t}
+$$
+
+<br>
 
 </div>
+
 <div>
 
-<div style="display:flex; gap:6px;">
-<img src="assets/tgv_t0.png" style="width:33%; border-radius:6px;" alt="TGV t=0">
-<img src="assets/tgv_t500.png" style="width:33%; border-radius:6px;" alt="TGV t=500">
-<img src="assets/tgv_t900.png" style="width:33%; border-radius:6px;" alt="TGV t=900">
-</div>
-<p class="cap" style="text-align:center;">TGV vorticity at t = 0, 500, 900.</p>
+<img src="assets/tgv_t0.png" style="width:31%;">
+<img src="assets/tgv_t500.png" style="width:31%;">
+<img src="assets/tgv_t900.png" style="width:31%;">
+
+<p class="cap">
+Taylor–Green vortex evolution at increasing timesteps
+</p>
+
+<br>
+
+<img src="assets/analytic_decay.png" style="width:75%;">
+
+<p class="cap">
+Analytical velocity decay
+</p>
 
 </div>
+
 </div>
 
 ---
 
-## Taylor–Green — naive vs GAVG
+## What Happens if We Train a Neural Network?
 
 <div class="cols">
-<div>
 
-### Naive MLP <span class="muted">(no D4, soft conservation)</span>
+<div class="fragment fade-in">
 
-- fits training triples fine in isolation…
-- …but **diverges** in the LBM loop within a few hundred steps.
+### Naive MLP
 
-### GAVG <span class="muted">(D4 + algebraic conservation)</span>
+- No physical structure enforced
+- Errors accumulate during rollout
 
-- symmetry & conservation hold **every step**
-- errors stay bounded → decay curve tracked
+<br>
 
-</div>
-<div>
+<img src="assets/naive_t900.png" style="width:75%;">
 
-![Velocity decay](assets/velocity_decay.png)
-<!-- .element: style="width:100%; border-radius:6px;" -->
-
-<p class="cap" style="text-align:center;">Velocity decay vs analytic — GAVG follows, naive blows up.</p>
+<p class="cap" style="font-size:0.75em;">
+Vortex structure breaks down during long-time evolution
+</p>
 
 </div>
+
+<div class="fragment fade-in">
+
+### Lattice Symmetry
+
+- Collision operator should respect D4 lattice symmetry
+- Outputs are averaged over symmetry transforms
+
+<br>
+
+<img src="assets/symmetry_t900.png" style="width:90%;">
+
+<p class="cap" style="font-size:0.75em;">
+Symmetry averaging restores coherent vortex structure
+</p>
+
+</div>
+
+<div class="fragment fade-in">
+
+### Conservation
+
+$$
+\sum_i f_i = \rho
+$$
+
+$$
+\sum_i f_i c_i = \rho u
+$$
+
+<br>
+
+<img src="assets/conservation_decay.png" style="width:90%;">
+
+<p class="cap" style="font-size:0.75em;">
+Reduced long-time drift in velocity decay
+</p>
+
+</div>
+
+</div>
+
+---
+
+## Combining All Constraints
+
+<div class="cols">
+
+<div style="width:60%;">
+
+<img src="assets/combined_velocity_decay.png" style="width:100%;">
+
+<p class="cap">
+Velocity decay comparison for all model variants
+</p>
+
+</div>
+
+<div style="width:40%;">
+
+<img src="assets/naive_t900.png" style="width:31%;">
+<img src="assets/symmetry_t900.png" style="width:31%;">
+<img src="assets/fully_constrained_t900.png" style="width:31%;">
+
+<p class="cap">
+Naive → Symmetry → Fully constrained
+</p>
+
+<br>
+
+</div>
+
 </div>
 
 ---
