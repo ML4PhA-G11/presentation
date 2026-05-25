@@ -139,15 +139,14 @@ Analytical velocity decay
 
 ### Naive MLP
 
-- Learns one-step collision mapping
 - No physical structure enforced
 - Errors accumulate during rollout
 
 <br>
 
-<img src="assets/naive_t900.png" style="width:90%;">
+<img src="assets/naive_t900.png" style="width:75%;">
 
-<p class="cap">
+<p class="cap" style="font-size:0.75em;">
 Vortex structure breaks down during long-time evolution
 </p>
 
@@ -164,7 +163,7 @@ Vortex structure breaks down during long-time evolution
 
 <img src="assets/symmetry_t900.png" style="width:90%;">
 
-<p class="cap">
+<p class="cap" style="font-size:0.75em;">
 Symmetry averaging restores coherent vortex structure
 </p>
 
@@ -186,7 +185,7 @@ $$
 
 <img src="assets/conservation_decay.png" style="width:90%;">
 
-<p class="cap">
+<p class="cap" style="font-size:0.75em;">
 Reduced long-time drift in velocity decay
 </p>
 
