@@ -123,6 +123,13 @@ $$ \mathrm{MSRE} = \sum_{i=0}^{8}\left(\frac{f_i^{\text{post}}-\hat{f}_i^{\text{
 </div>
 </div>
 
+--
+
+## GAVG vs. plain MLP
+
+![GAVG vs. MLP comparison](assets/training-loss-gavg_vs_mlp.png)
+<!-- .element: style="width:100%; border-radius:6px;" -->
+
 ---
 
 ## Taylor–Green Vortex as a Stability Benchmark
@@ -313,7 +320,7 @@ x = Add()([x, residual])          # corrects either way
 </div>
 <div>
 
-![ResNet experiment](assets/resnet_experiment.png)
+![ResNet experiment](assets/training-loss-gavg_vs_resnet.png)
 <!-- .element: style="width:100%; border-radius:6px;" -->
 
 - lower RMSRE at equal width
