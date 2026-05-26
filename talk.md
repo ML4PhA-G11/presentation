@@ -530,8 +530,9 @@ Collision is **already a residual**: $f^{\text{post}} = f^{\text{pre}} + \Delta 
 Same D4 + conservation wrapper; only the inner net becomes residual blocks:
 
 ```python
+residual = x
 x = Dense(n, "relu")(x)
-x = Dense(n, activation=None)(x)  # may be negative
+x = Dense(n, activation=None)(x)  # allow negative values for residuals
 x = Add()([x, residual])          # corrects either way
 ```
 
