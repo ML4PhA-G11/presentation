@@ -724,7 +724,7 @@ KVS dataset provides information of chaotic system that Taylor-Green doesn't.
 <br>
 "Backward compatible", this model works well for TG simulation:
 <br>
-learn from complex data helps the model smarter.
+learn from complex data helps make the model smarter.
 </div>
 
 ---
