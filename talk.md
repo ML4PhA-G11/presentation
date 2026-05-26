@@ -46,6 +46,15 @@ The nonlinearity lives in the **collision** — products of populations, like Bo
 
 $$ \Omega(f) \sim \int (f'f_1' - f f_1)\, d\Omega $$
 
+
+<div class="box" style="text-align:center;">
+However, LBM could be very memory-bound. Advanced operators can be very computationally expensive.
+</div>
+
+<div class="box" style="text-align:center;">
+Can a surrogate model catch the butterfly effect?
+</div>
+
 --
 
 ## The collision term (Stosszahlansatz) and molecular chaos
