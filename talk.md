@@ -530,22 +530,145 @@ Collision is **already a residual**: $f^{\text{post}} = f^{\text{pre}} + \Delta 
 Same D4 + conservation wrapper; only the inner net becomes residual blocks:
 
 ```python
+residual = x
 x = Dense(n, "relu")(x)
-x = Dense(n, activation=None)(x)  # may be negative
+x = Dense(n, activation=None)(x)  # allow negative values for residuals
 x = Add()([x, residual])          # corrects either way
 ```
 
 </div>
 <div>
 
+
 ![ResNet experiment](assets/training-loss-gavg_vs_resnet.png)
 <!-- .element: style="width:100%; border-radius:6px;" -->
+<p class="cap">
+Training on Taylor-Green vortex dataset: GAVG + Resnet vs GAVG alone.<br>
+<small>Comparable training loss for this dataset.</small>
+</p>
 
 </div>
 </div>
 
+<div
+  class="cols fragment fade-in"
+  data-fragment-index="0"
+  style="
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  "
+>
+<i><small>Notable: we did not find this extension in existing papers so far</small></i>
+</div>
 
 ---
+
+## Beyond GAVG — Lattice-Equivariant Neural Network (LENN)
+
+<div class="cols">
+
+<div style="text-align:left">
+
+GAVG is expensive
+<small>GAVG in 2D takes 8 $\times$ forward passes to average over the D4 group. Instead of averaging, we can **bake in the symmetry** by constraining the weight matrices to be **group-equivariant**.</small>
+
+
+
+The problem is **equivariant by construct**, we require:
+$$
+\begin{cases}
+ AP &= PA 
+  \newline
+ b &= Pb 
+ \end{cases} 
+\forall P \in \set{ \text{generators of } D_4 }
+$$ 
+
+<small>The lattice symmetry is a known, exact property of the system. Instead of enforcing it by averaging, we can bake it into the architecture itself via group-equivariant matrices.</small>
+
+The result?
+<small>a much smaller model (fewer parameters) that trains much faster than GAVG, while achieving the same accuracy on Taylor–Green vortex.</small>
+
+
+</div>
+
+
+<div>
+
+<img src="assets/training-loss-gavg-resnet-vs-lenn.png" style="width:100%; max-height:300px; object-fit:contain; border-radius:6px;">
+
+<p class="cap">
+Training on Taylor-Green vortex dataset: LENN vs GAVG + ResNet.
+</p>
+</div>
+
+</div>
+</div>
+
+---
+
+<!-- This slide was intended as a nested slide, but adding nested slides makes the font of the main slide smaller somehow; too small for the audience -->
+
+## Ortali et al. (2025)
+From the paper: <i>"Enhancing Lattice Kinetic Schemes for Fluid Dynamics with Lattice-Equivariant Neural Networks"</i>
+
+<div class="cols">
+
+<div>
+For example, considering the D2Q9 stencil, A and b satisfy Eq. (24)
+if and only if they have the following form:
+
+<div>
+
+![ResNet experiment](assets/equivariant-matrix-d4.png)
+<!-- .element: style="width:70%; border-radius:6px;" -->
+
+</div>
+
+</div>
+</div>
+
+---
+
+## LENN vs LENN + ResNet - Training on subset of KVS dataset
+
+
+<div class="cols">
+<div style="text-align:left; flex:3">
+Applying the same idea on a Kármán Vortex Street dataset
+<small>Here ResNet truly shows it's differentiating strength:
+The LENN network plateaus at a much higher loss, while the ResNet extension continues to improve and eventually achieves a much lower loss.  
+</small>
+
+How do we interpret this? 
+<small>
+
+This may confirm the intuition that **the true information lies in the residuals**.
+
+</small>
+<!-- The Kármán Vortex Street dataset is more complex and chaotic than the Taylor–Green vortex, which may require a more flexible model to capture its dynamics accurately. The ResNet architecture, with its ability to learn residuals, may be better suited to capture the nuances of the Kármán Vortex Street dataset, while the LENN alone may struggle to fit the data as effectively. -->
+ <!-- This suggests that the residual connections in the ResNet architecture are helping to capture the complex dynamics of the Kármán Vortex Street dataset more effectively than the LENN alone.
+ -->
+
+<div class="fragment fade-in">
+
+**Cliffhanger**: We wanted to train this model on the full KVS dataset and simulate a KVS scenario, but GPU budget had run out.
+
+</div>
+
+</div>
+
+<div style="flex:2">
+
+<img src="assets/training-loss-lenn-vs-lenn-resnet.png" style="width:100%; max-height:300px; object-fit:contain; border-radius:6px;">
+
+
+</div>
+</div>
+
+---
+
 
 ## GAVG + ResNet trained with TG synthesis dataset does not catch the chaotic behavior
 
