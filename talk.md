@@ -658,10 +658,12 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 
 ## Takeaways
 <div style="font-size:1.12em; line-height:1.3;">
-- It is possible to learn collision operators of LBM. Supposedly all operators are possible.
-- By applying physics-informed constraints such as GAVG, the model is more accurate than MLP with the same layer number.
-- Train the model with dataset with complex physics embedded makes the model "smarter".
-- ResNet can help catch the nuance of chaotic system.
+<ul>
+<li>It is possible to learn collision operators of LBM. Supposedly all operators are possible.</li>
+<li>By applying physics-informed constraints such as GAVG, the model is more accurate than MLP with the same layer number.</li>
+<li>Train the model with dataset with complex physics embedded makes the model "smarter".</li>
+<li>ResNet can help catch the nuance of chaotic system.</li>
+</ul>
 </div>
 
 <div class="cols">
