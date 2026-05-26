@@ -616,14 +616,70 @@ KVS dataset provides information of chaotic system that Taylor-Green dataset doe
 ---
 
 ## Future work
-- **More Operators** LBM has different collision approximations
-- **LENNs — Lattice Equivariant NNs.** Symmetry as a reusable building block, not a hand-wired lift/average around one MLP.
-- **Push to 3D.** Same group-equivariance recipe on D3Q27.
-- **Boundary condition handling** Replace or reconstruct expensive boundary condition computation.
-- **Training for chaotic systems** Sensitivity to initial conditions.
-- **Model generalization** Trained model should apply to different scenarios governing by the same physics; different Reynold numbers.
-- **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; all where LBM is applicable.
-- **Measure of Suppression**. How much is the ML model suppressing the anti-symmetry? Affects generalization.
+<div class="cols">
+<div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">1 · More operators</span>
+
+LBM has different collision approximations.
+
+</div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">2 · LENNs</span>
+
+Lattice Equivariant NNs as a reusable symmetry building block, not a hand-wired lift/average around one MLP.
+
+</div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">3 · Push to 3D</span>
+
+Same group-equivariance recipe on D3Q27.
+
+</div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">4 · Boundary handling</span>
+
+Replace or reconstruct expensive boundary condition computation.
+
+</div>
+
+</div>
+<div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">5 · Chaotic training</span>
+
+Sensitivity to initial conditions.
+
+</div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">6 · Model generalization</span>
+
+Apply to scenarios governed by the same physics across different Reynolds numbers.
+
+</div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">7 · Real-world flows</span>
+
+Hemodynamics, supernova hydrodynamics, aerodynamics; all where LBM is applicable.
+
+</div>
+
+<div class="box">
+<span class="muted" style="color:#3498db; font-weight:600;">8 · Suppression measure</span>
+
+How much does the ML model suppress anti-symmetry? Affects generalization.
+
+</div>
+
+</div>
+</div>
 
 --
 
