@@ -912,7 +912,7 @@ ResNet helps capture nuances of chaotic systems.
 </div>
 
 <div class="box">
-We appreciate the opportunity to propose our project.
+We appreciate the opportunity to propose our project, Christoph's supervision, the effort of the team, and your listening!
 </div>
 
 
