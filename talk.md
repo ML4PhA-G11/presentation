@@ -731,15 +731,14 @@ learn from complex data helps the model smarter.
 </div>
 
 <div>
-<img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
-<p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
-
 <img src="assets/karman_ml.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset trained)</p>
 
+<img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
+
 <img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, KVS dataset trained)</p>
-
 </div>
 </div>
 
