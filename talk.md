@@ -588,7 +588,7 @@ $$
 <small>The lattice symmetry is a known, exact property of the system. Instead of enforcing it by averaging, we can bake it into the architecture itself via group-equivariant matrices.</small>
 
 The result?
-<small>a much smaller model (fewer parameters) that trains much faster than GAVG, while achieving the same accuracy on Taylor–Green vortex.</small>
+<small>A much smaller model (fewer parameters) that trains much faster than GAVG, while achieving the same accuracy on Taylor–Green vortex.</small>
 
 
 </div>
@@ -685,7 +685,11 @@ This may confirm the intuition that **the true information lies in the residuals
 </div>
 
 <div class="box" style="text-align:center; margin-top:8px;">
-The model has potential to catch some nuance but does not know how to do it exactly.
+Recall: "the true information lies in the residuals". Residual matters.
+<br>
+Residual makes the model has potential to catch some nuance
+<br>
+...but the model does not know how to do it exactly.
 </div>
 
 ---
@@ -707,9 +711,11 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 </div>
 
 <div class="box" style="text-align:center; margin-top:8px;">
-KVS dataset provides information of chaotic system that Taylor-Green dataset doesn't.
+KVS dataset provides information of chaotic system that Taylor-Green doesn't.
 <br>
-"Backward compatible", this model works well for TG simulation: learn from complex data helps the model smarter.
+"Backward compatible", this model works well for TG simulation:
+<br>
+learn from complex data helps the model smarter.
 </div>
 
 ---
@@ -728,11 +734,12 @@ KVS dataset provides information of chaotic system that Taylor-Green dataset doe
 <img src="assets/karman-GAVG.resnet-TG.trained-synced.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG + ResNet, TG dataset trained)</p>
 
+<img src="assets/karman_ml.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
+<p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset trained)</p>
+
 <img src="assets/karman-GAVG-KVS.dataset-nn_velocity_field-4096bs-h100-GAVG-30000nsteps-1perstep.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
 <p class="cap" style="text-align:center;">ML-LBM (GAVG, KVS dataset trained)</p>
 
-<img src="assets/karman_ml.gif" style="width:50%; border-radius:6px;" alt="ML-LBM">
-<p class="cap" style="text-align:center;">ML-LBM (GAVG, TG dataset)</p>
 </div>
 </div>
 
