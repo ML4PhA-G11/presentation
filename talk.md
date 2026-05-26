@@ -567,7 +567,7 @@ The model has potential to catch some nuance but does not know how to do it exac
 
 ---
 
-## We caught the butterfly by training with KVS dataset!
+## We caught the butterfly!
 
 
 Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
@@ -585,7 +585,8 @@ Flow past a cylinder, **Re 150** — classical BGK-LBM vs learned ML-LBM.
 
 <div class="box" style="text-align:center; margin-top:8px;">
 KVS dataset provides information of chaotic system that Taylor-Green dataset doesn't.
-Furthermore, this model works well for TG simulation: learn from complex data helps the model smarter.
+<br>
+"Backward compatible", this model works well for TG simulation: learn from complex data helps the model smarter.
 </div>
 
 ---
@@ -621,8 +622,8 @@ Furthermore, this model works well for TG simulation: learn from complex data he
 - **Boundary condition handling** Replace or reconstruct expensive boundary condition computation.
 - **Training for chaotic systems** Sensitivity to initial conditions.
 - **Model generalization** Trained model should apply to different scenarios governing by the same physics; different Reynold numbers.
-- **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; domain boundaries via surrogate models.
-- **Measure of Supression**. How much is the ML model supressing the anti-symmetry? Affects generalization.
+- **Real-world flows.** Hemodynamics, supernova hydrodynamics, aerodynamics; all where LBM is applicable.
+- **Measure of Suppression**. How much is the ML model suppressing the anti-symmetry? Affects generalization.
 
 --
 
