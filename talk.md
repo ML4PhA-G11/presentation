@@ -733,10 +733,10 @@ Beyond single-relaxation BGK: MRT, multiphase, thermal — across varying $\tau$
 | Git repositories | 10 |
 
 </div>
+</div>
 
 <div class="box">
 We appreciate the opportunity to propose our project.
-</div>
 </div>
 
 
