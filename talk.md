@@ -756,7 +756,9 @@ ResNet helps capture nuances of chaotic systems.
 | Metric | Count |
 |---|---|
 | Slack messages | 160 msg, 45 files |
+| Whatsapp | 500+ |
 | Emails | 60+ |
+| Meetings | 7+ |
 | Snellius Budeget unit | 30000+ |
 | Git repositories | 10 |
 
